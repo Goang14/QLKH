@@ -1,0 +1,25 @@
+<?php
+return [
+    'list_project' => 'Danh sách dự án',
+    'name' => 'Tên dự án',
+    'name_manager' => 'Quản lý',
+    'client' => 'Khách hàng',
+    'in_charge' => 'Phụ trách',
+    'status' => 'Trạng thái',
+    'registration_date' => 'Ngày đăng ký',
+    'end_date' => 'Ngày kết thúc',
+    'remarks' => 'Nhận xét',
+    'action' => 'Thao tác',
+    'create' => 'Tạo mới',
+    'code' => 'Mã dự án',
+    'pd' => 'PD',
+    'doing' => 'Đang thực hiện',
+    'done' => 'Kết thúc dự án',
+    'other' => 'Khác',
+    'list_members' => 'Danh sách thành viên',
+    'joined_members' => 'Thành viên tham gia',
+    'check_all_members' => 'Chọn tất cả',
+    'mess_check_manager' => 'Vui lòng chọn người quản lý!',
+    'work_place_vn' => 'Văn Phòng Việt Nam',
+    'work_place_jp' => 'Văn Phòng Nhật Bản'
+];

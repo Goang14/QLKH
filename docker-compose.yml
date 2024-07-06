@@ -1,0 +1,81 @@
+version: '3.4'
+services:
+  workflow:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: workflow
+    container_name: workflow
+    links:
+      - workflow_db
+    hostname: workflow
+    restart: unless-stopped
+    tty: true
+    environment:
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./:/usr/share/nginx/html
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 6990:80
+    networks:
+      - back-tier
+
+  workflow_db:
+    image: mysql:8.0
+    container_name: workflow_db
+    restart: unless-stopped
+    tty: true
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - TZ=Asia/Tokyo
+      - MYSQL_AUTHENTICATION_PLUGIN=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password
+    hostname: workflow_db
+    volumes:
+      - workflow_db:/var/lib/mysql
+    ports:
+      - 6991:3306
+    networks:
+      - back-tier
+
+  workflow_redis:
+    image: redis:alpine
+    container_name: workflow_redis
+    restart: unless-stopped
+    tty: true
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Tokyo
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD"
+    volumes:
+      - workflow_redis:/var/lib/redis/data
+    ports:
+      - 6992:6379
+    networks:
+      - back-tier
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=workflow_db
+      - PMA_USER=root
+      - PMA_PASSWORD=${DB_PASSWORD}
+    ports:
+      - 6993:80
+    networks:
+      - back-tier
+
+volumes:
+  workflow_db:
+  workflow_redis:
+
+networks:
+  back-tier:

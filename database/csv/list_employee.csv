@@ -1,0 +1,29 @@
+"Role","Position","Emploee CD","Name(V)","Name(J)","Email","Password","Gender","Language"
+"0","Manager","00001","Keiji Yumiba","Keiji Yumiba","keiji.yumiba@sankei-bc.co.jp","12345",0,0
+"0","Developer","00002","Takumi Mekaru","Takumi Mekaru","takumi.mekaru@sankei-bc.co.jp","12345",0,0
+"0","Developer","21001","Nguyễn Công Danh","グェン　コン　ザン","danhnc@sankei-bc.co.jp","21001",0,1
+"1","Developer","21002","Ngô Quang Linh","ゴー　クアン　リン","linhnq@sankei-bc.co.jp","21002",0,1
+"1","Developer","22003","Cao Thái Quý","カオ　タイ　クィー","quyct@sankei-bc.co.jp","22003",0,1
+"1","Developer","22002","Lê Tiến Đạt","レー　ティエン　ダット","datlt@sankei-bc.co.jp","22002",0,1
+"1","Developer","23001","Lê Trung Hiếu","レー　チュン　ヒェウ","hieult@sankei-bc.co.jp","23001",0,1
+"1","Developer","23004","Lê Cảnh Năng","レー　カイン　ナン","nanglc@sankei-bc.co.jp","23004",0,1
+"0","Developer","22006","Phan Bá Minh Chí","ファン　バー　ミン　チ","chipbm@sankei-bc.co.jp","22006",0,1
+"1","Developer","23002","Dương Đình Đức","ズオン　ディン　ドゥック","ducdd@sankei-bc.co.jp","23002",0,1
+"1","Developer","23014","Hoàng Việt Tuấn","ホアン　ヴェット　トゥアン","tuanhv@sankei-bc.co.jp","23014",0,1
+"1","Developer","23016","Nguyễn Văn Ngọc","グェン　ヴァン　ゴック","ngocnv@sankei-bc.co.jp","23016",0,1
+"1","Developer","23012","Nguyễn Văn Trung","グェン　ヴァン　チュン","trungnv@sankei-bc.co.jp","23012",0,1
+"1","Developer","23015","Lê Văn Hoàng","レー　ヴァン　ホアン","hoanglv@sankei-bc.co.jp","23015",0,1
+"1","Developer","23017","Nguyễn Bá Lương","グェン　バー　ルオン","luongnb@sankei-bc.co.jp","23017",0,1
+"1","Intern","23006","Phan Duy Hào","ファン　ズイ　ハオ","haopd@sankei-bc.co.jp","23006",0,1
+"1","Intern","23007","Phan Mạnh Hào","ファン　マイン　ハオ","haopm@sankei-bc.co.jp","23007",0,1
+"1","Intern","23008","Trần Thị Phương Thảo"," チャン　ティ　フォン　タオ","thaottp@sankei-bc.co.jp","23008",1,1
+"1","Intern","23009","Hồ Anh Hòa","ホー　アイン　ホア","hoaha@sankei-bc.co.jp","23009",0,1
+"1","Intern","23010","Hồ Xuân Bắc","ホー　スアン　バック","bachx@sankei-bc.co.jp","23010",0,1
+"1","Developer","23011","Phạm Thế Thân","ファム　テー　タン","thanpt@sankei-bc.co.jp","23011",0,1
+"1","Tester","22001","Võ Thị Trà","ヴォー　ティ　チャー","travt@sankei-bc.co.jp","22001",1,1
+"1","Tester","23003","Vương Thị Ngọc","ヴン　ティ　ゴック","ngocvt@sankei-bc.co.jp","23003",1,1
+"1","Tester","23005","Nguyễn Thị Ngoan","グェン ティ グアン","ngoannt@sankei-bc.co.jp","23005",1,1
+"1","Tester","24001","Trần Thúy Quỳnh","チャン　トゥイ　クイン","quynhtt@sankei-bc.co.jp","24001",1,1
+"0","Communicator","22004","Nguyễn Bá Thủy","グェン　バー　トゥイ","thuynb@sankei-bc.co.jp","22004",0,1
+"1","Communicator","23013","Phạm Thị Quỳnh Trang","ファム　ティ　クイン　チャン","trangptq@sankei-bc.co.jp","23013",1,1
+"0","Accountant","22005","Hồ Thị Thúy Hằng","ホー　ティ　トゥイ　ハン","hanghtt@sankei-bc.co.jp","22005",1,1
