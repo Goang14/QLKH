@@ -37,13 +37,4 @@ class SupplierService extends BaseService
             throw $e;
         }
     }
-
-    public function deleteSupplier($id){
-        try {
-            return Suppliers::find($id)->delete();
-        } catch (Exception $e) {
-            Log::error($e);
-            throw $e;
-        }
-    }
 }

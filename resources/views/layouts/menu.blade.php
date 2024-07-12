@@ -2,7 +2,7 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="nav-link" href="">
+                <a class="nav-link {{ request()->is('product') ? 'active-menu' : '' }}" href="{{route('product')}}">
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                     Quản lý sản phẩm
                 </a>
@@ -29,7 +29,7 @@
                     Quản lý đơn hàng
                 </a>
 
-                <a class="nav-link {{ request()->is('client') ? 'active-menu' : '' }}" href="{{route('suppliers')}}">
+                <a class="nav-link {{ request()->is('suppliers') ? 'active-menu' : '' }}" href="{{route('suppliers')}}">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
                     Quản lý nhà cung cấp
                 </a>

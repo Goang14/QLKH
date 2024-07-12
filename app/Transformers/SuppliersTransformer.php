@@ -14,6 +14,7 @@ class SuppliersTransformer extends TransformerAbstract
     public function transform(Suppliers $value)
     {
         return [
+            'id' => $value->id,
             'name' => $value->name,
             'contact_name' => $value->contact_name,
             'phone' => $value->phone,

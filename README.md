@@ -70,13 +70,6 @@ Bootstrap v5.3.1 (https://getbootstrap.com/)
     2. Create unit test
         php artisan make:Test Services/UserServiceTest --unit
     ```
-- Website running default on : **http://localhost/sankei-workflow-management/public/**
-- Account admin:
-    ```
-    Username: user1@gmail.com || user2@gmail.com || ... || user30@gmail.com
-    Password: 12345678
-    ```
-
 ## Git Flow
 - Step 1: Change label of task to processing
 - Step 2: checkout to dev, pull newest code from dev

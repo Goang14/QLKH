@@ -39,13 +39,12 @@ class SupplierController extends Controller
     public function store(SuppliersRequest $request)
     {
         $data = $this->supplierService->createSupplier($request);
-        return $data;
+        return responder()->data($data, new SuppliersTransformer);
     }
 
     public function searchSupplier(Request $request){
-        $supplier = $this->supplierService->searchSupplier();
+        $supplier = $this->supplierService->searchSupplier($request);
         $data = responder()->paginate($supplier, new SuppliersTransformer);
-        dd($data);
         return $data;
     }
 
@@ -70,6 +69,7 @@ class SupplierController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->supplierService->deleteSupplier($id);
+        return redirect()->route('suppliers');
     }
 }

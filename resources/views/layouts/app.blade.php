@@ -21,6 +21,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     <script src="{{ asset('js/jquery-3.7.0.min.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('js/common.js') }}"></script>
+    <script src="{{ asset('js/pagination.js') }}"></script>
 </head>
 
 <body class="sb-nav-fixed">

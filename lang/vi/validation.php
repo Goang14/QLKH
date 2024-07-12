@@ -176,56 +176,10 @@ return [
     */
 
     'attributes' => [
-        'name_jp' => 'Tên Nhật Bản',
-        'name_vi' => 'Tên Việt Nam',
-        'code' => 'Mã số',
-        'project_code' => 'Mã dự án',
-        'id_customer' => 'Khách hàng',
-        'name' => 'Tên',
-        'status' => 'Trạng thái',
-        'start_date' => 'Ngày bắt đầu',
-        'end_date' => 'Ngày kết thúc',
-        'note' => 'Ghi chú',
-        // Task attributes
-        'working_day' => 'Ngày làm việc',
-        'id_project' => 'Tên dự án',
-        'id_work_content' => 'Nội dung công việc',
-        'id_indirect_task' => 'Công việc gián tiếp',
-        'id_place_work' => 'Địa điểm làm việc',
-        'work_time' => 'Thời gian làm việc',
-        'travel_time' => 'Thời gian di chuyển',
-        'remarks' => 'Ghi chú',
-        'old_password'=> 'Mật khẩu cũ',
-        'new_password'=> 'Mật khẩu mới',
-        'employee_code' => 'Mã nhân viên',
-        'username' => 'Họ và tên',
-        //User attributes
-        'email' => 'E-mail',
-        'password' => 'Mật khẩu',
-        'id_position' =>'Chức vụ',
-        'birthday' => 'Ngày sinh',
+        'name' => 'Tên nhà cung cấp',
+        'contact_name' => 'Tên liên lạc',
         'phone' => 'Số điện thoại',
-        'sex' => 'Giới tính',
-        'employee_code_update' => 'Mã nhân viên',
-        'username_update' => 'Họ và tên',
-        'email_update' => 'E-mail',
-        'password_update' => 'Mật khẩu',
-        'id_position_update' =>'Chức vụ',
-        'birthday_update' => 'Ngày sinh',
-        'phone_update' => 'Số điện thoại',
-        'sex_update' => 'Giới tính',
-
-        // Business Customer Attributes
-        'customer_code' => 'Mã khách hàng',
-        'customer_name' => 'Tên khách hàng',
-
-        // date filter
-        'working_day_start' => 'Ngày bắt đầu',
-        'working_day_end' => 'Ngày kết thúc',
-
-        'old_password' => 'Mật khẩu cũ',
-        'new_password' => 'Mật khẩu mới',
-        'password_retype' => 'Mật khẩu',
-        'id_manager' => 'Quản lý'
+        'email' => 'E-mail',
+        'address' => 'Địa chỉ',
     ],
 ];
