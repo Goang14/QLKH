@@ -33,4 +33,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     ////====////
     Route::get('/product', [ProductController::class, 'index'])->name('product');
+    Route::get('/create-product', [ProductController::class, 'store'])->name('product.create');
 });

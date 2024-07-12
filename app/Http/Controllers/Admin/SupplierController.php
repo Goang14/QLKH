@@ -42,6 +42,10 @@ class SupplierController extends Controller
         return responder()->data($data, new SuppliersTransformer);
     }
 
+    /**
+     * search a supplier
+     * @return data
+     */
     public function searchSupplier(Request $request){
         $supplier = $this->supplierService->searchSupplier($request);
         $data = responder()->paginate($supplier, new SuppliersTransformer);

@@ -9,36 +9,36 @@
             <div class="modal-body">
                 <form action="" id="createSuppliersNew" class="needs-validation">
                     @csrf
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 mb-3">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <label for="name" class="form-label">Tên nhà cung cấp
                                 <span class="badge bg-danger"></span>
                             </label>
                             <input name="name" type="text" class="form-control" id="name">
                             <span id="error_name" class="invalid-feedback"></span>
                         </div>
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="contact_name" class="form-label">Tên liên lạc
                                 <span class="badge bg-danger"></span>
                             </label>
                             <input name="contact_name" type="text" class="form-control" id="contact_name">
                             <span id="error_contact_name" class="invalid-feedback"></span>
                         </div>
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="phone" class="form-label">Số điện thoại
                                 <span class="badge bg-danger"></span>
                             </label>
-                            <input name="phone" type="text" class="form-control" id="phone">
+                            <input name="phone" type="tel" class="form-control" id="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
                             <span id="error_phone" class="invalid-feedback"></span>
                         </div>
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="email" class="form-label">Email
                                 <span class="badge bg-danger"></span>
                             </label>
                             <input name="email" type="text" class="form-control" id="email">
                             <span id="error_email" class="invalid-feedback"></span>
                         </div>
-                        <div class="col-md-8 mb-3">
+                        <div class="col-md-6 mb-3">
                             <label for="address" class="form-label">Địa chỉ
                                 <span class="badge bg-danger"></span>
                             </label>

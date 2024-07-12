@@ -9,7 +9,7 @@
                         <div class="w-100 title-screen">Quản lý nhà cung cấp</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
-                                data-bs-target="#createSupplier">
+                                data-bs-target="#createSupplier" onclick="clearModal()">
                                 Thêm
                             </button>
                         </div>
@@ -51,7 +51,8 @@
             </div>
         </div>
     </div>
-    @include('website.suppliers.modal')
+    @include('website.suppliers.create-modal')
+    @include('website.suppliers.update-modal')
 @endsection
 
 @section('script')
@@ -62,6 +63,7 @@
         loadData();
     });
     let keyword = '';
+    let suppliersData = {};
 
     function addParameterToURL(page) {
         let url = `{{ route('suppliers.search') }}?page=${page}`;
@@ -108,6 +110,7 @@
             </tr>`;
                 row = row.replace(':id', item.id);
                 dataTable.append(row);
+                suppliersData[`${item.id}`] = item;
             });
             $('#suppliers-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
@@ -128,5 +131,18 @@
         keyword = event?.target?.value ?? '';
         loadData();
     });
+
+    function clearModal(){
+        $('#name').val('');
+        $('#contact_name').val('');
+        $('#phone').val('');
+        $('#email').val('');
+        $('#address').val('');
+    }
+
+    function fillModal(id) {
+        if (id) {
+        }
+    }
 </script>
 @endsection

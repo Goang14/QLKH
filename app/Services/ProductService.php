@@ -2,33 +2,33 @@
 
 namespace App\Services;
 
-use App\Models\Suppliers;
+use App\Models\Products;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Class SupplierService
+ * Class ProductService
  * @package App\Services
  */
-class SupplierService extends BaseService
+class ProductService extends BaseService
 {
-    public function createSupplier($request){
+    public function createProduct($request){
         try {
             $create = $request->all();
-            return Suppliers::create($create);
+            return Products::create($create);
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
         }
     }
 
-    public function searchSupplier($request){
+    public function searchProduct($request){
         try {
             $params = $request->only('keyword');
-            $query = Suppliers::query();
+            $query = Products::query();
             if (isset($params['keyword'])) {
                 $query->where(function($query) use ($params) {
-                    $query->where('suppliers.name', 'LIKE', "%{$params['keyword']}%");
+                    $query->where('products.name', 'LIKE', "%{$params['keyword']}%");
                 });
             }
             return $query->paginate(5);

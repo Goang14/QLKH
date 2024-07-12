@@ -9,19 +9,19 @@
                         <div class="w-100 title-screen">Quản lý sản phẩm</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
-                                data-bs-target="#createSupplier">
+                                data-bs-target="#createProduct">
                                 Thêm
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="suppliers-datatable">
+                    <div id="products-datatable">
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 col-xl-4 pe-0">
                                 <label for="project_client" class="form-label m-0">Tìm kiếm</label>
                                 <div class="input-group">
-                                    <input id="search-supplier" type="text" class="form-control" placeholder="Tìm kiếm"
+                                    <input id="search-product" type="text" class="form-control" placeholder="Tìm kiếm"
                                         value="">
                                     <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
                                 </div>
@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-    {{-- @include('website.suppliers.modal') --}}
+    @include('website.products.modal')
 @endsection
 
 @section('script')

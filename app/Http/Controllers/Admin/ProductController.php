@@ -3,10 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+
+    protected $productService;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(ProductService $productService)
+    {
+        $this->middleware('auth');
+        $this->productService = $productService;
+    }
+
     /**
      * Display a listing of the resource.
      */
