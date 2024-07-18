@@ -59,67 +59,67 @@
 
 <script>
 
-    // $(document).ready(function() {
-    //     loadData();
-    // });
-    // let keyword = '';
+    $(document).ready(function() {
+        loadData();
+    });
+    let keyword = '';
 
-    // function addParameterToURL(page) {
-    //     let url = `{{ route('suppliers.search') }}?page=${page}`;
-    //     if (keyword !== '') {
-    //         url +=`&keyword=${keyword}`
-    //     }
-    //     return url;
-    // }
+    function addParameterToURL(page) {
+        let url = `{{ route('repairs.search') }}?page=${page}`;
+        if (keyword !== '') {
+            url +=`&keyword=${keyword}`
+        }
+        return url;
+    }
 
-    // function loadData(page = 1) {
-    //     var search = $('#search-supplier').val();
-    //     let url = addParameterToURL(page);
-    //     $.ajax({
-    //         url: url,
-    //         type: 'GET',
-    //         dataType: 'json',
-    //     }).done(function(response) {
-    //         let dataTable = $('#suppliers-datatable #data-table-body').empty();
-    //         // render table data
-    //         $.each(response.data, function(index, item) {
-    //             let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
-    //             <td>${item.id}</td>
-    //             <td>${item.name}</td>
-    //             <td>${item.contact_name}</td>
-    //             <td class="text-center">${item.phone}</td>
-    //             <td class="text-center">${item.email}</td>
-    //             <td class="text-center">${item.address}</td>
-    //             <td class="text-center">
-    //                 <button
-    //                     type="button"
-    //                     data-bs-toggle="modal" data-bs-target="#update-modal"
-    //                     class="btn btn-warning btn-sm"
-    //                     onclick="fillModal('${item.id}')">
-    //                     <i class="bi bi-pencil-square"></i>
-    //                 </button>
-    //             </td>
-    //         </tr>`;
-    //             dataTable.append(row);
-    //         });
-    //         $('#suppliers-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
-    //     }).fail(function(err) {
-    //         const errors = err?.responseJSON?.errors;
-    //         if (typeof errors === 'object' && errors !== null && !(errors instanceof Array)) {
-    //             for (var key in errors) {
-    //                 if (errors.hasOwnProperty(key)) {
-    //                     $(`#${key}`).addClass('is-invalid');
-    //                     $(`#error_${key}`).text(errors[key]);
-    //                     $(`#error_${key}`).addClass('d-block');
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
+    function loadData(page = 1) {
+        var search = $('#search-supplier').val();
+        let url = addParameterToURL(page);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'json',
+        }).done(function(response) {
+            let dataTable = $('#repair-datatable #data-table-body').empty();
+            // render table data
+            $.each(response.data, function(index, item) {
+                let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
+                <td>${item.id}</td>
+                <td>${item.name}</td>
+                <td>${item.phone}</td>
+                <td class="text-center">${item.address}</td>
+                <td class="text-center">${item.repair_content}</td>
+                <td class="text-center">${item.start_guarantee} '-' ${item.end_guarantee}</td>
+                <td class="text-center">
+                    <button
+                        type="button"
+                        data-bs-toggle="modal" data-bs-target="#update-modal"
+                        class="btn btn-warning btn-sm"
+                        onclick="fillModal('${item.id}')">
+                        <i class="bi bi-pencil-square"></i>
+                    </button>
+                </td>
+            </tr>`;
+                dataTable.append(row);
+            });
+            $('#repair-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
+        }).fail(function(err) {
+            const errors = err?.responseJSON?.errors;
+            if (typeof errors === 'object' && errors !== null && !(errors instanceof Array)) {
+                for (var key in errors) {
+                    if (errors.hasOwnProperty(key)) {
+                        $(`#${key}`).addClass('is-invalid');
+                        $(`#error_${key}`).text(errors[key]);
+                        $(`#error_${key}`).addClass('d-block');
+                    }
+                }
+            }
+        });
+    }
 
-    // $('#suppliers-datatable #search-supplier').keyup(function(event) {
-    //     keyword = event?.target?.value ?? '';
-    //     loadData();
-    // });
+    $('#suppliers-datatable #search-supplier').keyup(function(event) {
+        keyword = event?.target?.value ?? '';
+        loadData();
+    });
 </script>
 @endsection

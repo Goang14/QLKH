@@ -45,6 +45,15 @@ class RepairController extends Controller
         //
     }
 
+       /**
+     * search a repair
+     * @return data
+     */
+    public function searchRepair(Request $request){
+        $repair = $this->repairService->searchRepair($request);
+        return responder()->paginate($repair, new RepairTransformer);
+    }
+
     /**
      * Update the specified resource in storage.
      */

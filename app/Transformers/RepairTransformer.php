@@ -38,7 +38,10 @@ class RepairTransformer extends TransformerAbstract
             "repair_content" => $value->repair_content,
             "status" => 0,
             "start_guarantee" => $value->start_guarantee,
-            "end_guarantee" => $value->end_guarantee
+            "end_guarantee" => $value->end_guarantee,
+            'name' => $value->customer_name,
+            'phone' => $value->phone,
+            'address' => $value->address,
         ];
     }
 }

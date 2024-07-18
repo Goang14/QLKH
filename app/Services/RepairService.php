@@ -38,21 +38,28 @@ class RepairService extends BaseService
         }
     }
 
-    public function searchRepair($request){
+    public function searchRepair($request)
+    {
         try {
             $params = $request->only('keyword');
-            $query = Repairs::query();
+            $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
+                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address');
+
             if (isset($params['keyword'])) {
-                $query->where(function($query) use ($params) {
-                    $query->where('repairs.name', 'LIKE', "%{$params['keyword']}%");
+                $keyword = $params['keyword'];
+                $query->where(function ($query) use ($keyword) {
+                    $query->where('repairs.name', 'LIKE', "%{$keyword}%")
+                        ->orWhere('customers.name', 'LIKE', "%{$keyword}%");
                 });
             }
+
             return $query->paginate(5);
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
         }
     }
+
 
     public function updateRepair($request){
         try {

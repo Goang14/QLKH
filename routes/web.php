@@ -40,4 +40,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     //===//
     Route::get('/repair', [RepairController::class, 'index'])->name('repairs');
     Route::post('/create-repair', [RepairController::class, 'store'])->name('repairs.create');
+    Route::get('/search-repair', [RepairController::class, 'searchRepair'])->name('repairs.search');
 });
