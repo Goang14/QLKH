@@ -181,5 +181,8 @@ return [
         'phone' => 'Số điện thoại',
         'email' => 'E-mail',
         'address' => 'Địa chỉ',
+        'type' => "Loại",
+        'repair_content' => 'Nội dung sửa chữa',
+        'name_customer' => "Tên khách hàng"
     ],
 ];

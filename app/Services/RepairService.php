@@ -2,33 +2,49 @@
 
 namespace App\Services;
 
-use App\Models\Suppliers;
+use App\Models\Customers;
+use App\Models\Repairs;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Class SupplierService
+ * Class RepairService
  * @package App\Services
  */
-class SupplierService extends BaseService
+class RepairService extends BaseService
 {
-    public function createSupplier($request){
+    public function createRepair($request){
         try {
             $create = $request->all();
-            return Suppliers::create($create);
+
+            $customer = Customers::create([
+                "name" => $create['name_customer'],
+                "email" => $create['email'],
+                "phone" => $create['phone'],
+                "address" => $create['address'],
+                "type" => $create['type'],
+            ]);
+
+            return Repairs::create([
+                "customer_id" => $customer->id,
+                "repair_content" => $create['repair_content'],
+                "status" => 0,
+                "start_guarantee" => $create['start_guarantee'],
+                "end_guarantee" => $create['end_guarantee'],
+            ]);
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
         }
     }
 
-    public function searchSupplier($request){
+    public function searchRepair($request){
         try {
             $params = $request->only('keyword');
-            $query = Suppliers::query();
+            $query = Repairs::query();
             if (isset($params['keyword'])) {
                 $query->where(function($query) use ($params) {
-                    $query->where('suppliers.name', 'LIKE', "%{$params['keyword']}%");
+                    $query->where('repairs.name', 'LIKE', "%{$params['keyword']}%");
                 });
             }
             return $query->paginate(5);
@@ -38,9 +54,9 @@ class SupplierService extends BaseService
         }
     }
 
-    public function updateSupplier($request){
+    public function updateRepair($request){
         try {
-            return Suppliers::find($request->id)->update([
+            return Repairs::find($request->id)->update([
                 'id' => $request->id,
                 'name' => $request->name,
                 'contact_name' => $request->contact_name,
@@ -54,9 +70,9 @@ class SupplierService extends BaseService
         }
     }
 
-    public function deleteSupplier($id){
+    public function deleteRepair($id){
         try {
-            return Suppliers::find($id)->delete();
+            return Repairs::find($id)->delete();
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

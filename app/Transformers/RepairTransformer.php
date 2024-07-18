@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Transformers;
-use App\Models\Products;
 
+use App\Models\Repairs;
 use League\Fractal\TransformerAbstract;
 
-class ProductTransformer extends TransformerAbstract
+class RepairTransformer extends TransformerAbstract
 {
     /**
      * List of resources to automatically include
@@ -30,16 +30,15 @@ class ProductTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Products $products)
+    public function transform(Repairs $value)
     {
         return [
-            "name" => $products->name,
-            "description" => $products->description,
-            "price" => $products->price	,
-            "quantity" => $products->quantity,
-            "supplier_id" => $products->supplier_id,
-            "min_quantity" => $products->min_quantity,
-            "image_url" => $products->image_url,
+            "id" => $value->id,
+            "customer_id" => $value->customer_id,
+            "repair_content" => $value->repair_content,
+            "status" => 0,
+            "start_guarantee" => $value->start_guarantee,
+            "end_guarantee" => $value->end_guarantee
         ];
     }
 }

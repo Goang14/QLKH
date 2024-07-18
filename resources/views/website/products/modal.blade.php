@@ -17,7 +17,18 @@
                             <input name="name_product" type="text" class="form-control" id="name_product">
                             <span id="error_name_product" class="invalid-feedback"></span>
                         </div>
-
+                        <div class="col-md-6 mb-3">
+                            <label for="supplier_id" class="form-label">Tên nhà cung cấp
+                                <span class="badge bg-danger"></span>
+                            </label>
+                            <select name="supplier_id" class="form-control" id="supplier_id">
+                                <option value="">Vui lòng chọn</option>
+                                @foreach ($data as $value)
+                                    <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                @endforeach
+                            </select>
+                            <span id="error_supplier_id" class="invalid-feedback"></span>
+                        </div>
                         <div class="col-md-6 mb-3">
                             <label for="price" class="form-label">Giá
                                 <span class="badge bg-danger"></span>
@@ -40,20 +51,20 @@
                             <span id="error_quantity_min" class="invalid-feedback"></span>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="image" class="form-label">Hình ảnh
-                                <span class="badge bg-danger"></span>
-                            </label>
-                            <input name="image" type="file" class="form-control" id="image"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                            <img id="blah" alt=" hình ảnh" width="150" height="150" />
-                            <span id="error_image" class="invalid-feedback"></span>
-                        </div>
-                        <div class="col-md-6 mb-3">
                             <label for="description" class="form-label">Mô tả
                                 <span class="badge bg-danger"></span>
                             </label>
                             <textarea name="description" type="text" class="form-control" id="description"></textarea>
                             <span id="error_description" class="invalid-feedback"></span>
                         </div>
+                    </div>
+                    <div class="col-md-6 mb-3 pe-2">
+                        <label for="image" class="form-label">Hình ảnh
+                            <span class="badge bg-danger"></span>
+                        </label>
+                        <input name="image" type="file" class="form-control" id="image"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                        <img id="blah" alt=" hình ảnh" width="150" height="150" />
+                        <span id="error_image" class="invalid-feedback"></span>
                     </div>
                 </form>
             </div>
@@ -79,7 +90,7 @@
 
     function createProduct(){
         let formData = new FormData($('form#createProductNew')[0]);
-        let url = "12"
+        let url = "{{route('product.create')}}"
         $.ajax({
                 type: 'POST',
                 url: url,

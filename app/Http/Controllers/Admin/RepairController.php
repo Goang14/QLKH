@@ -3,24 +3,20 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Suppliers;
-use App\Services\ProductService;
+use App\Http\Requests\RepairRequest;
+use App\Models\Services;
+use App\Services\RepairService;
 use App\Transformers\ProductTransformer;
+use App\Transformers\RepairTransformer;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class RepairController extends Controller
 {
-
-    protected $productService;
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct(ProductService $productService)
+    protected $repairService;
+    public function __construct(RepairService $repairService)
     {
         $this->middleware('auth');
-        $this->productService = $productService;
+        $this->repairService = $repairService;
     }
 
     /**
@@ -28,17 +24,17 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data = Suppliers::get();
-        return view('website.products.index', compact('data'));
+        $service = Services::get();
+        return view('website.repairs.index', compact('service'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RepairRequest $request)
     {
-        $data = $this->productService->createProduct($request);
-        return responder()->data($data, new ProductTransformer);
+        $create = $this->repairService->createRepair($request);
+        return responder()->data($create, new RepairTransformer);
     }
 
     /**

@@ -7,9 +7,9 @@
                     Quản lý sản phẩm
                 </a>
 
-                <a class="nav-link {{ request()->is('statistical') ? 'active-menu' : '' }}" href="">
+                <a class="nav-link {{ request()->is('repair') ? 'active-menu' : '' }}" href="{{route('repairs')}}">
                     <div class="sb-nav-link-icon"><i class="fas fa-bar-chart-line-fill"></i></div>
-                    Quản lý tồn kho
+                    Quản lý sửa chữa
                 </a>
 
                 <hr class="mb-1" />

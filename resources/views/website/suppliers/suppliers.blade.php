@@ -94,7 +94,7 @@
                 <td class="text-center">
                     <button
                         type="button"
-                        data-bs-toggle="modal" data-bs-target="#update-modal"
+                        data-bs-toggle="modal" data-bs-target="#updateSupplier"
                         class="btn btn-warning btn-sm"
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
@@ -141,7 +141,14 @@
     }
 
     function fillModal(id) {
+        $('#id_supplier').val(id)
+        $('#updateSupplier').modal('show');
         if (id) {
+            $('#updateSuppliersNew #name').val(suppliersData[`${id}`]['name']);
+            $('#updateSuppliersNew #contact_name').val(suppliersData[`${id}`]['contact_name']);
+            $('#updateSuppliersNew #phone').val(suppliersData[`${id}`]['phone']);
+            $('#updateSuppliersNew #email').val(suppliersData[`${id}`]['email']);
+            $('#updateSuppliersNew #address').val(suppliersData[`${id}`]['address']);
         }
     }
 </script>

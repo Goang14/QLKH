@@ -15,12 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            IndirectTasksSeeder::class,
-            PlaceWorksSeeder::class,
-            WorkContentsSeeder::class,
-            PositionsSeeder::class,
-            ProjectSeeder::class,
-            UpdateNameViInIndirectTasksSeeder::class
+            ServiceSeeder::class,
         ]);
     }
 }
