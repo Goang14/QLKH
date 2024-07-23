@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RepairRequest;
+use App\Models\Products;
 use App\Models\Services;
 use App\Services\RepairService;
 use App\Transformers\ProductTransformer;
@@ -25,7 +26,8 @@ class RepairController extends Controller
     public function index()
     {
         $service = Services::get();
-        return view('website.repairs.index', compact('service'));
+        $product = Products::get();
+        return view('website.repairs.index', compact('service', 'product'));
     }
 
     /**
@@ -57,9 +59,10 @@ class RepairController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $updateRepair = $this->repairService->updateRepair($request);
+        return responder()->updated($updateRepair);
     }
 
     /**
@@ -67,6 +70,7 @@ class RepairController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->repairService->deleteRepair($id);
+        return redirect()->route('repairs');
     }
 }

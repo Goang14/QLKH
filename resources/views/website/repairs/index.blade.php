@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="w-100 title-screen">Quản lý sữa chữa</div>
+                        <div class="w-100 title-screen">Quản lý thông tin</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
                                 data-bs-target="#createRepair" onclick="clearModal()">
@@ -20,10 +20,24 @@
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 col-xl-4 pe-0">
                                 <label for="project_client" class="form-label m-0">Tìm kiếm</label>
-                                <div class="input-group">
-                                    <input id="search-repair" type="text" class="form-control" placeholder="Tìm kiếm"
-                                        value="">
-                                    <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+                                <div class="row pt-3">
+                                    <div class="col-5">
+                                        <select name="" id="" class="form-select">
+                                            <option value="">Vui lòng chọn</option>
+                                            @foreach ($service as $value)
+                                                <option value="{{$value->id}}">{{$value->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-7">
+                                        <div class="input-group">
+                                            <input id="search-repair" type="text" class="form-control" placeholder="Tìm kiếm"
+                                                value="">
+                                            <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -35,9 +49,10 @@
                                         <th scope="col">ID</th>
                                         <th scope="col">Tên khách hàng</th>
                                         <th scope="col">Số điện thoại</th>
-                                        <th scope="col">Địa chỉ</th>
-                                        <th scope="col">Nội dung sửa chữa</th>
+                                        <th scope="col">Dịch vụ</th>
+                                        <th scope="col">Nội dung</th>
                                         <th scope="col">Thời gian bảo hành</th>
+                                        <th scope="col">Địa chỉ</th>
                                         <th scope="col">Chức năng</th>
                                       </tr>
                                 </thead>
@@ -94,14 +109,15 @@
             // render table data
             $.each(response.data, function(index, item) {
                 let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
-                <td>${item.id}</td>
+                <td>${++index}</td>
                 <td>${item.name}</td>
                 <td>${item.phone}</td>
-                <td class="text-center">${item.address}</td>
-                <td class="text-center">${item.repair_content}</td>
+                <td>${item.type == 1 ? "Bán hàng" : item.type == 2 ? "Bán máy - " + item.product_name  : item.type == 3 ? "Sửa chữa" : "Cầm đồ"}</td>
+                <td class="text-center">${item.repair_content ?? ''}</td>
                 <td class="text-center">
                     ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}
                 </td>
+                <td class="text-center">${item.address}</td>
                 <td class="text-center">
                     <button
                         type="button"
@@ -110,12 +126,19 @@
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
                     </button>
+                    <form action="{{ route('repair.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>`;
+                row = row.replace(':id', item.id);
                 dataTable.append(row);
                 repairsData[`${item.id}`] = item;
             });
-            console.log(repairsData);
             $('#repair-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
             const errors = err?.responseJSON?.errors;
@@ -137,7 +160,6 @@
     });
 
     function clearModal(){
-        console.log(122);
         $('#createRepair #name_customer').val('');
         $('#createRepair #phone').val('');
         $('#createRepair #email').val('');
@@ -149,6 +171,11 @@
     }
 
     function fillModal(id) {
+        $('#id_customer').val(repairsData[`${id}`]['customer_id']);
+        $('#id_repair').val(id);
+        let start_guarantee = repairsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
+        let end_guarantee = repairsData[`${id}`]['end_guarantee'].replace(' 00:00:00', '');
+
         $('#updateRepair').modal('show');
         if (id) {
             $('#updateRepairNew #name_customer').val(repairsData[`${id}`]['name']);
@@ -157,8 +184,8 @@
             $('#updateRepairNew #address').val(repairsData[`${id}`]['address']);
             $('#updateRepairNew #type').val(repairsData[`${id}`]['type']);
             $('#updateRepairNew #repair_content').val(repairsData[`${id}`]['repair_content']);
-            $('#updateRepairNew #start_guarantee').val(repairsData[`${id}`]['start_guarantee']);
-            $('#updateRepairNew #end_guarantee').val(repairsData[`${id}`]['end_guarantee']);
+            $('#updateRepairNew #start_guarantee').val(start_guarantee);
+            $('#updateRepairNew #end_guarantee').val(end_guarantee);
         }
     }
 </script>

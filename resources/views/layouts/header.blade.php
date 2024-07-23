@@ -1,7 +1,7 @@
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a href="" class="d-flex navbar-brand ps-2 align-items-center justify-content-center">
+    <a href="{{route('home')}}" class="d-flex navbar-brand ps-2 align-items-center justify-content-center">
         <img src="https://www.adobe.com/content/dam/cc/us/en/creativecloud/design/discover/mascot-logo-design/mascot-logo-design_fb-img_1200x800.jpg" alt="" width="90" height="55">
     </a>
 
@@ -23,7 +23,7 @@
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-user fa-fw"></i>
-                    {{ Auth::user()->username ?? 'No_Name01' }}
+                    {{ Auth::user()->name ?? 'No_Name01' }}
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li>

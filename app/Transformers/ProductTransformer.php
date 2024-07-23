@@ -39,6 +39,7 @@ class ProductTransformer extends TransformerAbstract
             "quantity" => $products->quantity,
             "supplier_id" => $products->supplier_id,
             "min_quantity" => $products->min_quantity,
+            "supplier_name" => $products->supplier_name,
             "image_url" => $products->image_url,
         ];
     }

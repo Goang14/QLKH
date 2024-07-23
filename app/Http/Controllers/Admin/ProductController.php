@@ -42,6 +42,15 @@ class ProductController extends Controller
     }
 
     /**
+     * search a supplier
+     * @return data
+     */
+    public function searchProduct(Request $request){
+        $supplier = $this->productService->searchProduct($request);
+        return responder()->paginate($supplier, new ProductTransformer);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(string $id)

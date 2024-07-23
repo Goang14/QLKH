@@ -43,13 +43,13 @@
                             <input name="quantity" type="number" class="form-control" id="quantity" min="1" step="any" />
                             <span id="error_quantity" class="invalid-feedback"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
+                        {{-- <div class="col-md-6 mb-3">
                             <label for="quantity_min" class="form-label">Số lượng MIN
                                 <span class="badge bg-danger"></span>
                             </label>
                             <input name="quantity_min" type="number" class="form-control" id="quantity_min" min="1" step="any" >
                             <span id="error_quantity_min" class="invalid-feedback"></span>
-                        </div>
+                        </div> --}}
                         <div class="col-md-6 mb-3">
                             <label for="description" class="form-label">Mô tả
                                 <span class="badge bg-danger"></span>
@@ -57,15 +57,16 @@
                             <textarea name="description" type="text" class="form-control" id="description"></textarea>
                             <span id="error_description" class="invalid-feedback"></span>
                         </div>
+                        <div class="col-md-6 mb-3 pe-2">
+                            <label for="image" class="form-label">Hình ảnh
+                                <span class="badge bg-danger"></span>
+                            </label>
+                            <input name="image" type="file" class="form-control" id="image"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                            <img id="blah" alt=" hình ảnh" width="150" height="150" />
+                            <span id="error_image" class="invalid-feedback"></span>
+                        </div>
                     </div>
-                    <div class="col-md-6 mb-3 pe-2">
-                        <label for="image" class="form-label">Hình ảnh
-                            <span class="badge bg-danger"></span>
-                        </label>
-                        <input name="image" type="file" class="form-control" id="image"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-                        <img id="blah" alt=" hình ảnh" width="150" height="150" />
-                        <span id="error_image" class="invalid-feedback"></span>
-                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -78,7 +79,6 @@
     </div>
 </div>
 
-@section('script')
 <script>
     document.getElementById('price').addEventListener('input', function (e) {
         let value = e.target.value;
@@ -110,4 +110,3 @@
         })
     }
 </script>
-@endsection

@@ -27,13 +27,12 @@ class ProductService extends BaseService
             }
 
             return Products::create([
-                "name" => $create->name_product,
-                "description" => $create->description,
-                "price" => $create->price	,
-                "quantity" => $create->quantity,
-                "supplier_id" => $create->supplier_id,
-                "min_quantity" => $create->min_quantity,
-                "image_url" => $imageUrl,
+                "name" => $create['name_product'],
+                "description" => $create['description'],
+                "price" => $create['price'],
+                "quantity" => $create['quantity'],
+                "supplier_id" => $create['supplier_id'],
+                "image_url" => $imageUrl ?? null,
             ]);
         } catch (Exception $e) {
             Log::error($e);
@@ -44,7 +43,7 @@ class ProductService extends BaseService
     public function searchProduct($request){
         try {
             $params = $request->only('keyword');
-            $query = Products::query();
+            $query = Products::query()->join('suppliers', 'suppliers.id', 'products.supplier_id')->select('products.*', 'suppliers.name as supplier_name');
             if (isset($params['keyword'])) {
                 $query->where(function($query) use ($params) {
                     $query->where('products.name', 'LIKE', "%{$params['keyword']}%");

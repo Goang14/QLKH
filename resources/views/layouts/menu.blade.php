@@ -9,17 +9,22 @@
 
                 <a class="nav-link {{ request()->is('repair') ? 'active-menu' : '' }}" href="{{route('repairs')}}">
                     <div class="sb-nav-link-icon"><i class="fas fa-bar-chart-line-fill"></i></div>
-                    Quản lý sửa chữa
+                    Quản lý thông tin
+                </a>
+
+                <a class="nav-link {{ request()->is('suppliers') ? 'active-menu' : '' }}" href="{{route('suppliers')}}">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
+                    Quản lý nhà cung cấp
+                </a>
+
+                <a class="nav-link {{ request()->is('customer') ? 'active-menu' : '' }}" href="{{route('customer')}}">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
+                    Quản lý khách hàng
                 </a>
 
                 <hr class="mb-1" />
 
-                <a class="nav-link {{ request()->is('working-time') ? 'active-menu' : '' }}" href="">
-                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
-                    Quản lý nhập hàng
-                </a>
-
-                <a class="nav-link {{ request()->is('user') ? 'active-menu' : '' }}" href="">
+                {{--<a class="nav-link {{ request()->is('user') ? 'active-menu' : '' }}" href="">
                     <div class="sb-nav-link-icon"><i class="fas fa-person-lines-fill"></i></div>
                     Quản lý xuất hàng
                 </a>
@@ -42,7 +47,7 @@
                 <a class="nav-link {{ request()->is('client') ? 'active-menu' : '' }}" href="">
                     <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
                     Quản lý khách hàng
-                </a>
+                </a> --}}
             </div>
         </div>
     </nav>

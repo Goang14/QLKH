@@ -9,6 +9,8 @@
             <div class="modal-body">
                 <form action="" id="updateRepairNew" class="needs-validation">
                     @csrf
+                    <input name="id_repair" type="hidden" id="id_repair">
+                    <input name="id_customer" type="hidden" id="id_customer">
                     <div class="row">
                         <div class="col-6">
                             <h5><b>Khách hàng</b></h5>
@@ -17,7 +19,7 @@
                                 <label for="name_customer" class="form-label">Tên khách hàng
                                     <span class="badge bg-danger"></span>
                                 </label>
-                                <input name="c" type="text" class="form-control" id="name_customer">
+                                <input name="name_customer" type="text" class="form-control" id="name_customer">
                                 <span id="error_name_customer" class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-12 mb-3">
@@ -52,6 +54,18 @@
                                     @endforeach
                                 </select>
                                 <span id="error_type" class="invalid-feedback"></span>
+                            </div>
+                            <div class="d-name-tel col-md-12 mb-3">
+                                <label for="product_id" class="form-label">Tên máy
+                                    <span class="badge bg-danger"></span>
+                                </label>
+                                <select name="product_id" id="product_id" class="form-control" >
+                                    <option value="">Vui lòng chọn</option>
+                                    @foreach ($product as $value)
+                                        <option value="{{$value->id}}">{{$value->name}}</option>
+                                    @endforeach
+                                </select>
+                                <span id="error_product_id" class="invalid-feedback"></span>
                             </div>
                         </div>
                         <div class="col-6">
@@ -92,27 +106,45 @@
     </div>
 </div>
 
+<style>
+    .d-name-tel{
+        display: none;
+    }
+</style>
 
 <script>
-    // function createRepair(){
-    //     let formData = new FormData($('form#createRepairNew')[0]);
-    //     let url = "{{ route('repairs.create') }}"
-    //     $.ajax({
-    //             type: 'POST',
-    //             url: url,
-    //             data: formData,
-    //             processData: false,
-    //             contentType: false,
-    //             headers: {
-    //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //             },
-    //         }).done(function() {
-    //             $('#createRepair').modal('hide');
-    //             loadData();
-    //         }).fail(function(err) {
-    //             console.error(err);
-    //         }).always(function(always) {
-    //             alwaysAjax('createRepairNew', always);
-    //     })
-    // }
+
+    $(document).ready(function(){
+        $('#type').on('input', function(){
+            console.log($(".d-name-tel"));
+            if($('#type').val() != 2){
+                $(".d-name-tel").css("display","none");
+            } else {
+                $(".d-name-tel").css("display","block");
+            }
+        });
+    });
+
+    function updateRepair(){
+        let formData = new FormData($('form#updateRepairNew')[0]);
+        let url = `{{ route('repairs.update') }}`;
+
+        $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+            }).done(function() {
+                $('#updateRepair').modal('hide');
+                loadData();
+            }).fail(function(err) {
+                console.error(err);
+            }).always(function(always) {
+                alwaysAjax('updateRepairNew', always);
+        })
+    }
 </script>

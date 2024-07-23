@@ -14,6 +14,7 @@ class Products extends Model
         "price"	,
         "quantity",
         "supplier_id",
+        "product_id",
         "min_quantity",
         "image_url",
     ];

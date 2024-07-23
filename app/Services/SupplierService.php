@@ -40,8 +40,8 @@ class SupplierService extends BaseService
 
     public function updateSupplier($request){
         try {
-            return Suppliers::find($request->id)->update([
-                'id' => $request->id,
+            return Suppliers::find($request->id_supplier)->update([
+                // 'id' => $request->id,
                 'name' => $request->name,
                 'contact_name' => $request->contact_name,
                 'phone' => $request->phone,

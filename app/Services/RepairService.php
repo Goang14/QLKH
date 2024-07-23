@@ -16,7 +16,6 @@ class RepairService extends BaseService
     public function createRepair($request){
         try {
             $create = $request->all();
-
             $customer = Customers::create([
                 "name" => $create['name_customer'],
                 "email" => $create['email'],
@@ -27,6 +26,7 @@ class RepairService extends BaseService
 
             return Repairs::create([
                 "customer_id" => $customer->id,
+                "product_id" => $create['product_id'],
                 "repair_content" => $create['repair_content'],
                 "status" => 0,
                 "start_guarantee" => $create['start_guarantee'],
@@ -43,8 +43,8 @@ class RepairService extends BaseService
         try {
             $params = $request->only('keyword');
             $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
-                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type');
-
+                            ->leftJoin('products', 'products.id', '=', 'repairs.product_id')
+                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type', 'products.name as product_name');
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];
                 $query->where(function ($query) use ($keyword) {
@@ -63,13 +63,18 @@ class RepairService extends BaseService
 
     public function updateRepair($request){
         try {
-            return Repairs::find($request->id)->update([
-                'id' => $request->id,
-                'name' => $request->name,
-                'contact_name' => $request->contact_name,
-                'phone' => $request->phone,
+            $data = Repairs::find($request->id_repair)->update([
+                'repair_content' => $request->repair_content,
+                'start_guarantee' => $request->start_guarantee,
+                'end_guarantee' => $request->end_guarantee,
+            ]);
+
+            Customers::find($request->id_customer)->update([
+                'name' => $request->name_customer,
                 'email' => $request->email,
+                'phone' => $request->phone,
                 'address' => $request->address,
+                'type' => $request->type,
             ]);
         } catch (Exception $e) {
             Log::error($e);

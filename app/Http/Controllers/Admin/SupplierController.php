@@ -64,7 +64,6 @@ class SupplierController extends Controller
      */
     public function update(Request $request)
     {
-        dd($request);
         $updateSupplier = $this->supplierService->updateSupplier($request);
         return responder()->updated($updateSupplier);
     }

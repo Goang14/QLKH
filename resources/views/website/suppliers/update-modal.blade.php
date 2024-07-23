@@ -10,6 +10,7 @@
                 <form action="" id="updateSuppliersNew" class="needs-validation">
                     @csrf
                     <div class="row">
+                        <input type="hidden" name="id_supplier" id="id_supplier">
                         <div class="col-md-6 mb-3">
                             <label for="name" class="form-label">Tên nhà cung cấp
                                 <span class="badge bg-danger"></span>
@@ -47,7 +48,6 @@
                         </div>
                     </div>
                 </form>
-                <input type="hidden" name="" id="id_supplier">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary"
@@ -63,8 +63,7 @@
 <script>
     function updateSupplier(){
         let formData = new FormData($('form#updateSuppliersNew')[0]);
-        let url = `{{ route('suppliers.update') }}/${id_supplier}`;
-
+        let url = `{{ route('suppliers.update') }}`;
         $.ajax({
                 type: 'POST',
                 url: url,

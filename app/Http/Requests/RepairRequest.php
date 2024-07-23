@@ -27,9 +27,9 @@ class RepairRequest extends FormRequest
             "phone" => 'required',
             "address" => 'required',
             "type" => 'required',
-            "repair_content" => 'required',
-            "start_guarantee" => 'required',
-            "end_guarantee" => 'required',
+            // "repair_content" => 'required',
+            // "start_guarantee" => 'required',
+            // "end_guarantee" => 'required',
         ];
     }
 }

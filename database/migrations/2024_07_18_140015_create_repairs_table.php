@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('repairs', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
+            $table->integer('product_id')->nullable();
             $table->string('repair_content')->nullable();
             $table->integer('status')->nullable();
             $table->dateTime('start_guarantee')->nullable();
