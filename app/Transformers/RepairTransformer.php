@@ -41,6 +41,8 @@ class RepairTransformer extends TransformerAbstract
             "end_guarantee" => $value->end_guarantee,
             'name' => $value->customer_name,
             'phone' => $value->phone,
+            'email' => $value->email,
+            'type' => $value->type, 
             'address' => $value->address,
         ];
     }

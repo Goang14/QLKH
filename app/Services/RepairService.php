@@ -43,7 +43,7 @@ class RepairService extends BaseService
         try {
             $params = $request->only('keyword');
             $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
-                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address');
+                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type');
 
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];

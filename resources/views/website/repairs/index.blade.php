@@ -9,7 +9,7 @@
                         <div class="w-100 title-screen">Quản lý sữa chữa</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
-                                data-bs-target="#createRepair">
+                                data-bs-target="#createRepair" onclick="clearModal()">
                                 Thêm
                             </button>
                         </div>
@@ -53,6 +53,7 @@
         </div>
     </div>
     @include('website.repairs.create-modal')
+    @include('website.repairs.update-modal')
 @endsection
 
 @section('script')
@@ -63,6 +64,15 @@
         loadData();
     });
     let keyword = '';
+    let repairsData = {};
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
 
     function addParameterToURL(page) {
         let url = `{{ route('repairs.search') }}?page=${page}`;
@@ -89,11 +99,13 @@
                 <td>${item.phone}</td>
                 <td class="text-center">${item.address}</td>
                 <td class="text-center">${item.repair_content}</td>
-                <td class="text-center">${item.start_guarantee} '-' ${item.end_guarantee}</td>
+                <td class="text-center">
+                    ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}
+                </td>
                 <td class="text-center">
                     <button
                         type="button"
-                        data-bs-toggle="modal" data-bs-target="#update-modal"
+                        data-bs-toggle="modal" data-bs-target="#updateRepair"
                         class="btn btn-warning btn-sm"
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
@@ -101,7 +113,9 @@
                 </td>
             </tr>`;
                 dataTable.append(row);
+                repairsData[`${item.id}`] = item;
             });
+            console.log(repairsData);
             $('#repair-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
             const errors = err?.responseJSON?.errors;
@@ -117,9 +131,35 @@
         });
     }
 
-    $('#suppliers-datatable #search-supplier').keyup(function(event) {
+    $('#repair-datatable #search-repair').keyup(function(event) {
         keyword = event?.target?.value ?? '';
         loadData();
     });
+
+    function clearModal(){
+        console.log(122);
+        $('#createRepair #name_customer').val('');
+        $('#createRepair #phone').val('');
+        $('#createRepair #email').val('');
+        $('#createRepair #address').val('');
+        $('#createRepair #type').val('');
+        $('#createRepair #repair_content').val('');
+        $('#createRepair #start_guarantee').val('');
+        $('#createRepair #end_guarantee').val('');
+    }
+
+    function fillModal(id) {
+        $('#updateRepair').modal('show');
+        if (id) {
+            $('#updateRepairNew #name_customer').val(repairsData[`${id}`]['name']);
+            $('#updateRepairNew #phone').val(repairsData[`${id}`]['phone']);
+            $('#updateRepairNew #email').val(repairsData[`${id}`]['email']);
+            $('#updateRepairNew #address').val(repairsData[`${id}`]['address']);
+            $('#updateRepairNew #type').val(repairsData[`${id}`]['type']);
+            $('#updateRepairNew #repair_content').val(repairsData[`${id}`]['repair_content']);
+            $('#updateRepairNew #start_guarantee').val(repairsData[`${id}`]['start_guarantee']);
+            $('#updateRepairNew #end_guarantee').val(repairsData[`${id}`]['end_guarantee']);
+        }
+    }
 </script>
 @endsection
