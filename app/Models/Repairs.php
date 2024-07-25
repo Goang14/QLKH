@@ -11,6 +11,7 @@ class Repairs extends Model
 
     protected $fillable = [
         "customer_id",
+        "product_id",
         "repair_content",
         "status",
         "start_guarantee",

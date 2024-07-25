@@ -55,4 +55,29 @@ class ProductService extends BaseService
             throw $e;
         }
     }
+
+    public function updateProduct($request){
+        try {
+            return Products::find($request->id_product)->update([
+                'name' => $request->name_product,
+                'price' => $request->price,
+                'quantity' => $request->quantity,
+                'description' => $request->description,
+                'supplier_id' => $request->supplier_id
+            ]);
+        } catch (Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+    }
+
+    public function deleteProduct($id){
+        try {
+            return Products::find($id)->delete();
+        } catch (Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
+    }
+
 }

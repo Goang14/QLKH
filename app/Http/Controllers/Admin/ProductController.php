@@ -61,9 +61,10 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $updateProduct = $this->productService->updateProduct($request);
+        return responder()->updated($updateProduct);
     }
 
     /**
@@ -71,6 +72,7 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $this->productService->deleteProduct($id);
+        return redirect()->route('product');
     }
 }

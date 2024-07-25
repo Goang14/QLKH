@@ -65,6 +65,23 @@
                                 </select>
                                 <span id="error_product_id" class="invalid-feedback"></span>
                             </div>
+
+                            {{-- <div class="d-money-pawn col-md-12 mb-3">
+                                <label for="money_pawn" class="form-label">Số tiền cầm
+                                    <span class="badge bg-danger"></span>
+                                </label>
+                                <input name="money_pawn" type="text" class="form-control" id="money_pawn">
+                                <span id="error_money_pawn" class="invalid-feedback"></span>
+                            </div>
+
+                            <div class="d-money-pawn col-md-12 mb-3">
+                                <label for="money_pawn" class="form-label">Số tiền cầm
+                                    <span class="badge bg-danger"></span>
+                                </label>
+                                <input name="money_pawn" type="text" class="form-control" id="money_pawn">
+                                <span id="error_money_pawn" class="invalid-feedback"></span>
+                            </div> --}}
+
                         </div>
                         <div class="col-6">
                             <h5><b>Nội dung</b></h5>
@@ -110,12 +127,10 @@
         display: none;
     }
 </style>
-
 <script>
 
     $(document).ready(function(){
         $('#type').on('input', function(){
-            console.log($(".d-name-tel"));
             if($('#type').val() != 2){
                 $(".d-name-tel").css("display","none");
             } else {
@@ -123,6 +138,7 @@
             }
         });
     });
+
     function createRepair(){
         let formData = new FormData($('form#createRepairNew')[0]);
         let url = "{{ route('repairs.create') }}"

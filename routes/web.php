@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('/product', [ProductController::class, 'index'])->name('product');
     Route::post('/create-product', [ProductController::class, 'store'])->name('product.create');
     Route::get('/search-product', [ProductController::class, 'searchProduct'])->name('product.search');
+    Route::post('/update-product', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/delete-product/{id}', [ProductController::class, 'destroy'])->name('product.delete');
 
 
     //===//
@@ -46,6 +48,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('/update-repair', [RepairController::class, 'update'])->name('repairs.update');
     Route::get('/search-repair', [RepairController::class, 'searchRepair'])->name('repairs.search');
     Route::delete('/delete-repair/{id}', [RepairController::class, 'destroy'])->name('repair.delete');
+
 
     Route::get('/customer', [CustomerController::class, 'index'])->name('customer');
 

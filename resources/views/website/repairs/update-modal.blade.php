@@ -113,14 +113,12 @@
 </style>
 
 <script>
-
     $(document).ready(function(){
-        $('#type').on('input', function(){
-            console.log($(".d-name-tel"));
-            if($('#type').val() != 2){
-                $(".d-name-tel").css("display","none");
+        $('#updateRepairNew #type').on('input', function(){
+            if($('#updateRepairNew #type').val() != 2){
+                $("#updateRepairNew .d-name-tel").css("display","none");
             } else {
-                $(".d-name-tel").css("display","block");
+                $("#updateRepairNew .d-name-tel").css("display","block");
             }
         });
     });

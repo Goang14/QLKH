@@ -22,7 +22,7 @@
                                 <label for="project_client" class="form-label m-0">Tìm kiếm</label>
                                 <div class="row pt-3">
                                     <div class="col-5">
-                                        <select name="" id="" class="form-select">
+                                        <select name="service_search" id="service_search" class="form-select">
                                             <option value="">Vui lòng chọn</option>
                                             @foreach ($service as $value)
                                                 <option value="{{$value->id}}">{{$value->name}}</option>
@@ -52,6 +52,7 @@
                                         <th scope="col">Dịch vụ</th>
                                         <th scope="col">Nội dung</th>
                                         <th scope="col">Thời gian bảo hành</th>
+                                        <th scope="col">Trạng thái</th>
                                         <th scope="col">Địa chỉ</th>
                                         <th scope="col">Chức năng</th>
                                       </tr>
@@ -94,8 +95,18 @@
         if (keyword !== '') {
             url +=`&keyword=${keyword}`
         }
+
+        let value = $("#service_search").val();
+        if(value){
+            url +=`&service_search=${value}`
+        }
+
         return url;
     }
+
+    $("#service_search").on('change', function(){
+        loadData();
+    });
 
     function loadData(page = 1) {
         var search = $('#search-supplier').val();
@@ -117,6 +128,7 @@
                 <td class="text-center">
                     ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}
                 </td>
+                <td class="text-center">${item.type == 2 || item.type == 3 ? (item.status == 0 ? '<span class="text-success">Đang còn bảo hành</span>' : '<span class="text-danger">Hết bảo hành</span>') : ''}</td>
                 <td class="text-center">${item.address}</td>
                 <td class="text-center">
                     <button
@@ -171,6 +183,7 @@
     }
 
     function fillModal(id) {
+        console.log(repairsData);
         $('#id_customer').val(repairsData[`${id}`]['customer_id']);
         $('#id_repair').val(id);
         let start_guarantee = repairsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
@@ -178,6 +191,10 @@
 
         $('#updateRepair').modal('show');
         if (id) {
+            if(repairsData[`${id}`]['type'] == 2){
+                $("#updateRepairNew .d-name-tel").css("display","block");
+                $('#updateRepairNew #product_id').val(repairsData[`${id}`]['product_id']);
+            }
             $('#updateRepairNew #name_customer').val(repairsData[`${id}`]['name']);
             $('#updateRepairNew #phone').val(repairsData[`${id}`]['phone']);
             $('#updateRepairNew #email').val(repairsData[`${id}`]['email']);

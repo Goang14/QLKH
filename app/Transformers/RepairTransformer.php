@@ -35,9 +35,10 @@ class RepairTransformer extends TransformerAbstract
         return [
             "id" => $value->id,
             "customer_id" => $value->customer_id,
+            "product_id" => $value->product_id,
             "product_name" => $value->product_name,
             "repair_content" => $value->repair_content,
-            "status" => 0,
+            "status" => $value->status,
             "start_guarantee" => $value->start_guarantee,
             "end_guarantee" => $value->end_guarantee,
             'name' => $value->customer_name,

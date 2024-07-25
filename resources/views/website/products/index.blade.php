@@ -54,6 +54,7 @@
         </div>
     </div>
     @include('website.products.modal')
+    @include('website.products.update-modal')
 @endsection
 
 @section('script')
@@ -63,6 +64,7 @@
         loadData();
     });
     let keyword = '';
+    let productsData = {};
 
     function addParameterToURL(page) {
         let url = `{{ route('product.search') }}?page=${page}`;
@@ -99,9 +101,18 @@
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
                     </button>
+                    <form action="{{ route('product.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>`;
+                row = row.replace(':id', item.id);
                 dataTable.append(row);
+                productsData[`${item.id}`] = item;
             });
             $('#products-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
@@ -118,9 +129,19 @@
         });
     }
 
-    $('#suppliers-datatable #search-supplier').keyup(function(event) {
+    $('#products-datatable #search-product').keyup(function(event) {
         keyword = event?.target?.value ?? '';
         loadData();
     });
+
+    function fillModal(id) {
+        $('#id_product').val(id);
+        $('#updateProduct').modal('show');
+        $('#updateProductNew #name_product').val(productsData[`${id}`]['name']);
+        $('#updateProductNew #price').val(productsData[`${id}`]['price']);
+        $('#updateProductNew #supplier_id').val(productsData[`${id}`]['supplier_id']);
+        $('#updateProductNew #quantity').val(productsData[`${id}`]['quantity']);
+        $('#updateProductNew #description').val(productsData[`${id}`]['description']);
+    }
 </script>
 @endsection

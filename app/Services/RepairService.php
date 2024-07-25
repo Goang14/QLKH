@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Customers;
+use App\Models\Products;
 use App\Models\Repairs;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -24,9 +26,13 @@ class RepairService extends BaseService
                 "type" => $create['type'],
             ]);
 
+            $product = Products::find($request->product_id);
+            $product->quantity = $product->quantity - 1;
+            $product->save();
+
             return Repairs::create([
                 "customer_id" => $customer->id,
-                "product_id" => $create['product_id'],
+                "product_id" => $request->product_id,
                 "repair_content" => $create['repair_content'],
                 "status" => 0,
                 "start_guarantee" => $create['start_guarantee'],
@@ -41,19 +47,35 @@ class RepairService extends BaseService
     public function searchRepair($request)
     {
         try {
-            $params = $request->only('keyword');
+            $params = $request->only('keyword', 'service_search');
+            $data = Repairs::all();
+
+            foreach ($data as $value) {
+                if($value->end_guarantee < Carbon::now()){
+                    $value->status = 1;
+                    $value->save();
+                }
+            }
+
             $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
                             ->leftJoin('products', 'products.id', '=', 'repairs.product_id')
                             ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type', 'products.name as product_name');
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];
                 $query->where(function ($query) use ($keyword) {
-                    $query->where('repairs.name', 'LIKE', "%{$keyword}%")
-                        ->orWhere('customers.name', 'LIKE', "%{$keyword}%");
+                    $query->where('customers.name', 'LIKE', "%{$keyword}%")
+                        ->orWhere('customers.phone', 'LIKE', "%{$keyword}%");
                 });
             }
 
-            return $query->paginate(5);
+            if (isset($params['service_search'])){
+                $service_search = $params['service_search'];
+                $query->where(function ($query) use ($service_search) {
+                    $query->where('customers.type', $service_search);
+                });
+            }
+
+            return $query->paginate(10);
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

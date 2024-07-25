@@ -51,8 +51,8 @@
             </div>
         </div>
     </div>
-    {{-- @include('website.customers.create-modal')
-    @include('website.customers.update-modal') --}}
+    {{-- @include('website.customers.create-modal') --}}
+    {{-- @include('website.customers.update-modal') --}}
 @endsection
 
 @section('script')
