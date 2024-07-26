@@ -116,14 +116,15 @@
             type: 'GET',
             dataType: 'json',
         }).done(function(response) {
+            console.log(response);
             let dataTable = $('#repair-datatable #data-table-body').empty();
             // render table data
             $.each(response.data, function(index, item) {
                 let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
-                <td>${++index}</td>
-                <td>${item.name}</td>
-                <td>${item.phone}</td>
-                <td>${item.type == 1 ? "Bán hàng" : item.type == 2 ? "Bán máy - " + item.product_name  : item.type == 3 ? "Sửa chữa" : "Cầm đồ"}</td>
+                <td class="text-center">${++index}</td>
+                <td class="text-center">${item.name}</td>
+                <td class="text-center">${item.phone}</td>
+                <td class="text-center">${item.type == 1 ? "Bán hàng" : item.type == 2 ? "Bán máy - " + item.product_name  : item.type == 3 ? "Sửa chữa" : "Cầm đồ - "  + item.money_pawn + " VND"}</td>
                 <td class="text-center">${item.repair_content ?? ''}</td>
                 <td class="text-center">
                     ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}

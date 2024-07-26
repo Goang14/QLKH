@@ -46,6 +46,7 @@ class RepairTransformer extends TransformerAbstract
             'email' => $value->email,
             'type' => $value->type,
             'address' => $value->address,
+            'money_pawn' => $value->money,
         ];
     }
 }

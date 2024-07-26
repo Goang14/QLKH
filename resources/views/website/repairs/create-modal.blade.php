@@ -66,22 +66,13 @@
                                 <span id="error_product_id" class="invalid-feedback"></span>
                             </div>
 
-                            {{-- <div class="d-money-pawn col-md-12 mb-3">
-                                <label for="money_pawn" class="form-label">Số tiền cầm
-                                    <span class="badge bg-danger"></span>
-                                </label>
-                                <input name="money_pawn" type="text" class="form-control" id="money_pawn">
-                                <span id="error_money_pawn" class="invalid-feedback"></span>
-                            </div>
-
                             <div class="d-money-pawn col-md-12 mb-3">
                                 <label for="money_pawn" class="form-label">Số tiền cầm
                                     <span class="badge bg-danger"></span>
                                 </label>
-                                <input name="money_pawn" type="text" class="form-control" id="money_pawn">
+                                <input type="text" name="money_pawn" id="money_pawn" class="form-control" placeholder="1.000.000">
                                 <span id="error_money_pawn" class="invalid-feedback"></span>
-                            </div> --}}
-
+                            </div>
                         </div>
                         <div class="col-6">
                             <h5><b>Nội dung</b></h5>
@@ -126,15 +117,30 @@
     .d-name-tel{
         display: none;
     }
+
+    .d-money-pawn{
+        display: none;
+    }
 </style>
 <script>
 
     $(document).ready(function(){
+        document.getElementById('money_pawn').addEventListener('input', function (e) {
+            let value = e.target.value;
+            value = value.replace(/\D/g, '');
+            value = new Intl.NumberFormat('de-DE').format(value);
+            e.target.value = value;
+        });
+
         $('#type').on('input', function(){
-            if($('#type').val() != 2){
-                $(".d-name-tel").css("display","none");
-            } else {
+            if($('#type').val() == 2){
                 $(".d-name-tel").css("display","block");
+                $(".d-money-pawn").css("display","none");
+            }
+
+            if($('#type').val() == 4){
+                $(".d-money-pawn").css("display","block");
+                $(".d-name-tel").css("display","none");
             }
         });
     });

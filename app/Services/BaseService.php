@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Transitions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -102,5 +103,19 @@ class BaseService
         return response($csvData, 200)
             ->header('Content-Type', 'text/csv')
             ->header('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+    }
+
+    public function transition($product_id, $repair_id, $type, $money_transition){
+        try {
+            $transition = Transitions::create([
+                'product_id' => $product_id,
+                'repair_id' => $repair_id,
+                'type' => $type,
+                'money_transition' => $money_transition,
+            ]);
+            return $transition;
+        } catch (Exception $e) {
+            throw $e;
+        }
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Products;
 use App\Models\Repairs;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -17,6 +18,8 @@ class RepairService extends BaseService
 {
     public function createRepair($request){
         try {
+            DB::beginTransaction();
+
             $create = $request->all();
             $customer = Customers::create([
                 "name" => $create['name_customer'],
@@ -27,18 +30,34 @@ class RepairService extends BaseService
             ]);
 
             $product = Products::find($request->product_id);
-            $product->quantity = $product->quantity - 1;
-            $product->save();
+            if(isset($product) && !empty($product)){
+                $product->quantity = $product->quantity - 1;
+                $product->save();
+                $money = $product->price;
+            }
 
-            return Repairs::create([
+            $repair = Repairs::create([
                 "customer_id" => $customer->id,
                 "product_id" => $request->product_id,
                 "repair_content" => $create['repair_content'],
+                "money" => $money ?? ($request->money_pawn ? $request->money_pawn : ''),
                 "status" => 0,
                 "start_guarantee" => $create['start_guarantee'],
                 "end_guarantee" => $create['end_guarantee'],
             ]);
+
+            if($customer->type == 1 || $customer->type == 3){
+                $this->transition(null, $repair->id, $customer->type, 0);
+            }else if($customer->type == 2){
+                $this->transition($product->id, $repair->id, $customer->type, $product->price);
+            }else{
+                $this->transition(null, $repair->id, $customer->type, $request->money_pawn);
+            }
+
+            DB::commit();
+            return $repair;
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             throw $e;
         }
@@ -60,6 +79,7 @@ class RepairService extends BaseService
             $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
                             ->leftJoin('products', 'products.id', '=', 'repairs.product_id')
                             ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type', 'products.name as product_name');
+
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];
                 $query->where(function ($query) use ($keyword) {
@@ -106,7 +126,9 @@ class RepairService extends BaseService
 
     public function deleteRepair($id){
         try {
-            return Repairs::find($id)->delete();
+            $repair = Repairs::find($id);
+            Customers::find($repair->customer_id)->delete();
+            return $repair->delete();
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
