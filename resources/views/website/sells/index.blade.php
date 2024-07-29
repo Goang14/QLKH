@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="w-100 title-screen">Quản lý sửa chữa</div>
+                        <div class="w-100 title-screen">Quản lý bán hàng</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
                                 data-bs-target="#create" onclick="clearModal()">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="repair-datatable">
+                    <div id="sell-datatable">
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 col-xl-4 pe-0">
                                 <label for="project_client" class="form-label m-0">Tìm kiếm</label>
@@ -32,7 +32,7 @@
 
                                     <div class="col-7">
                                         <div class="input-group">
-                                            <input id="search-repair" type="text" class="form-control" placeholder="Tìm kiếm"
+                                            <input id="search-sell" type="text" class="form-control" placeholder="Tìm kiếm"
                                                 value="">
                                             <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
                                         </div>
@@ -50,6 +50,8 @@
                                         <th scope="col">Tên khách hàng</th>
                                         <th scope="col">Số điện thoại</th>
                                         <th scope="col">Dịch vụ</th>
+                                        <th scope="col">Tên máy</th>
+                                        <th scope="col">Số tiền</th>
                                         <th scope="col">Nội dung</th>
                                         <th scope="col">Thời gian bảo hành</th>
                                         <th scope="col">Trạng thái</th>
@@ -80,7 +82,7 @@
         loadData();
     });
     let keyword = '';
-    let repairsData = {};
+    let sellsData = {};
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -91,7 +93,7 @@
     }
 
     function addParameterToURL(page) {
-        let url = `{{ route('repairs.search') }}?page=${page}`;
+        let url = `{{ route('sells.search') }}?page=${page}`;
         if (keyword !== '') {
             url +=`&keyword=${keyword}`
         }
@@ -106,15 +108,17 @@
             dataType: 'json',
         }).done(function(response) {
             console.log(response);
-            let dataTable = $('#repair-datatable #data-table-body').empty();
+            let dataTable = $('#sell-datatable #data-table-body').empty();
             // render table data
             $.each(response.data, function(index, item) {
                 let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
                 <td class="text-center">${++index}</td>
                 <td class="text-center">${item.name}</td>
                 <td class="text-center">${item.phone}</td>
-                <td class="text-center">${"Sửa chữa"}</td>
-                <td class="text-center">${item.repair_content ?? ''}</td>
+                <td class="text-center">${"Bán hàng"}</td>
+                <td class="text-center">${item.product_name}</td>
+                <td class="text-center">${item.price}</td>
+                <td class="text-center">${item.content ?? ''}</td>
                 <td class="text-center">
                     ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}
                 </td>
@@ -128,7 +132,7 @@
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
                     </button>
-                    <form action="{{ route('repair.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
+                    <form action="{{ route('sells.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
@@ -139,9 +143,9 @@
             </tr>`;
                 row = row.replace(':id', item.id);
                 dataTable.append(row);
-                repairsData[`${item.id}`] = item;
+                sellsData[`${item.id}`] = item;
             });
-            $('#repair-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
+            $('#sell-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
             const errors = err?.responseJSON?.errors;
             if (typeof errors === 'object' && errors !== null && !(errors instanceof Array)) {
@@ -156,7 +160,7 @@
         });
     }
 
-    $('#repair-datatable #search-repair').keyup(function(event) {
+    $('#sell-datatable #search-sell').keyup(function(event) {
         keyword = event?.target?.value ?? '';
         loadData();
     });
@@ -173,19 +177,19 @@
     }
 
     function fillModal(id) {
-        $('#id_customer').val(repairsData[`${id}`]['customer_id']);
-        $('#id_repair').val(id);
-        let start_guarantee = repairsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
-        let end_guarantee = repairsData[`${id}`]['end_guarantee'].replace(' 00:00:00', '');
-
         $('#update').modal('show');
+        $('#id_customer').val(sellsData[`${id}`]['customer_id']);
+        $('#id_sell').val(id);
+        let start_guarantee = sellsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
+        let end_guarantee = sellsData[`${id}`]['end_guarantee'].replace(' 00:00:00', '');
         if (id) {
-            $('#updateNew #name_customer').val(repairsData[`${id}`]['name']);
-            $('#updateNew #phone').val(repairsData[`${id}`]['phone']);
-            $('#updateNew #email').val(repairsData[`${id}`]['email']);
-            $('#updateNew #address').val(repairsData[`${id}`]['address']);
-            $('#updateNew #type').val(repairsData[`${id}`]['type']);
-            $('#updateNew #content').val(repairsData[`${id}`]['repair_content']);
+            $('#updateNew #name_customer').val(sellsData[`${id}`]['name']);
+            $('#updateNew #phone').val(sellsData[`${id}`]['phone']);
+            $('#updateNew #email').val(sellsData[`${id}`]['email']);
+            $('#updateNew #address').val(sellsData[`${id}`]['address']);
+            $('#updateNew #type').val(sellsData[`${id}`]['type']);
+            $('#updateNew #product_id').val(sellsData[`${id}`]['product_id']);
+            $('#updateNew #content').val(sellsData[`${id}`]['content']);
             $('#updateNew #start_guarantee').val(start_guarantee);
             $('#updateNew #end_guarantee').val(end_guarantee);
         }

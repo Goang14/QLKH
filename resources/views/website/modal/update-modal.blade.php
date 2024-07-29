@@ -1,14 +1,16 @@
 <!-- Modal create employee -->
-<div class="modal fade" id="createRepair" tabindex="-1" aria-labelledby="createRepair" aria-hidden="true">
+<div class="modal fade" id="update" tabindex="-1" aria-labelledby="update" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="createUserModalLabel"><b>Tạo thông tin sữa chữa</b></h1>
+                <h1 class="modal-title fs-5" id="createUserModalLabel"><b>Sửa thông tin sửa chữa</b></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="createRepairNew" class="needs-validation">
+                <form action="" id="updateNew" class="needs-validation">
                     @csrf
+                    <input name="id_repair" type="hidden" id="id_repair">
+                    <input name="id_customer" type="hidden" id="id_customer">
                     <div class="row">
                         <div class="col-6">
                             <h5><b>Khách hàng</b></h5>
@@ -45,44 +47,44 @@
                                 <label for="type" class="form-label">Loại
                                     <span class="badge bg-danger"></span>
                                 </label>
-                                <select name="type" id="type" class="form-control" >
-                                    <option value="">Vui lòng chọn</option>
-                                    @foreach ($service as $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" value="{{ request()->is('repair') ? 'Sửa chữa' : (request()->is('sell') ? 'Bán hàng' : 'Cầm đồ') }}" disabled>
                                 <span id="error_type" class="invalid-feedback"></span>
                             </div>
-                            <div class="d-name-tel col-md-12 mb-3">
-                                <label for="product_id" class="form-label">Tên máy
-                                    <span class="badge bg-danger"></span>
-                                </label>
-                                <select name="product_id" id="product_id" class="form-control" >
-                                    <option value="">Vui lòng chọn</option>
-                                    @foreach ($product as $value)
-                                        <option value="{{$value->id}}">{{$value->name}}</option>
-                                    @endforeach
-                                </select>
-                                <span id="error_product_id" class="invalid-feedback"></span>
-                            </div>
 
-                            <div class="d-money-pawn col-md-12 mb-3">
-                                <label for="money_pawn" class="form-label">Số tiền cầm
-                                    <span class="badge bg-danger"></span>
-                                </label>
-                                <input type="text" name="money_pawn" id="money_pawn" class="form-control" placeholder="1.000.000">
-                                <span id="error_money_pawn" class="invalid-feedback"></span>
-                            </div>
+                            @if(request()->is('sell'))
+                                <input name="id_sell" type="hidden" id="id_sell">
+                                <div class="col-md-12 mb-3">
+                                    <label for="product_id" class="form-label">Tên máy
+                                        <span class="badge bg-danger"></span>
+                                    </label>
+                                    <select name="product_id" id="product_id" class="form-control" >
+                                        <option value="">Vui lòng chọn</option>
+                                        @foreach ($product as $value)
+                                            <option value="{{$value->id}}">{{$value->name}}</option>
+                                        @endforeach
+                                    </select>
+                                    <span id="error_product_id" class="invalid-feedback"></span>
+                                </div>
+                            @elseif(request()->is('pawn'))
+                                <input name="id_pawn" type="hidden" id="id_pawn">
+                                <div class="col-md-12 mb-3">
+                                    <label for="money_pawn" class="form-label">Số tiền cầm
+                                        <span class="badge bg-danger"></span>
+                                    </label>
+                                    <input type="text" name="money_pawn" id="money_pawn" class="form-control" placeholder="1.000.000">
+                                    <span id="error_money_pawn" class="invalid-feedback"></span>
+                                </div>
+                            @endif
                         </div>
                         <div class="col-6">
                             <h5><b>Nội dung</b></h5>
                             <hr>
                             <div class="col-md-12 mb-3">
-                                <label for="repair_content" class="form-label">Nội dung
+                                <label for="content" class="form-label">Nội dung sửa chữa
                                     <span class="badge bg-danger"></span>
                                 </label>
-                                <textarea name="repair_content" type="text" class="form-control" id="repair_content"></textarea>
-                                <span id="error_repair_content" class="invalid-feedback"></span>
+                                <textarea name="content" type="text" class="form-control" id="content"></textarea>
+                                <span id="error_content" class="invalid-feedback"></span>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <label for="guarantee" class="form-label">Thời gian bảo hành
@@ -106,48 +108,25 @@
                 <button type="button" class="btn btn-secondary"
                     data-bs-dismiss="modal">Đóng</button>
                 <button type="button" class="btn btn-primary"
-                    onclick="createRepair()">Lưu</button>
+                    onclick="updateRepair()">Lưu</button>
             </div>
         </div>
     </div>
 </div>
 
-
-<style>
-    .d-name-tel{
-        display: none;
-    }
-
-    .d-money-pawn{
-        display: none;
-    }
-</style>
 <script>
 
-    $(document).ready(function(){
-        document.getElementById('money_pawn').addEventListener('input', function (e) {
-            let value = e.target.value;
-            value = value.replace(/\D/g, '');
-            value = new Intl.NumberFormat('de-DE').format(value);
-            e.target.value = value;
-        });
+    function updateRepair(){
+        let formData = new FormData($('form#updateNew')[0]);
+        let url = "";
+        var currentUrl = window.location.href;
+        if(currentUrl.includes('repair'))
+            url = "{{ route('repairs.update') }}";
+        else if(currentUrl.includes('sell'))
+            url = "{{ route('sells.update') }}";
+        else currentUrl.includes('pawn')
+            url = "{{ route('pawns.update') }}";
 
-        $('#type').on('input', function(){
-            if($('#type').val() == 2){
-                $(".d-name-tel").css("display","block");
-                $(".d-money-pawn").css("display","none");
-            }
-
-            if($('#type').val() == 4){
-                $(".d-money-pawn").css("display","block");
-                $(".d-name-tel").css("display","none");
-            }
-        });
-    });
-
-    function createRepair(){
-        let formData = new FormData($('form#createRepairNew')[0]);
-        let url = "{{ route('repairs.create') }}"
         $.ajax({
                 type: 'POST',
                 url: url,
@@ -158,12 +137,12 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
             }).done(function() {
-                $('#createRepair').modal('hide');
+                $('#update').modal('hide');
                 loadData();
             }).fail(function(err) {
                 console.error(err);
             }).always(function(always) {
-                alwaysAjax('createRepairNew', always);
+                alwaysAjax('updateNew', always);
         })
     }
 </script>

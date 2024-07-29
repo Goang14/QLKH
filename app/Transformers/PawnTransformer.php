@@ -2,10 +2,10 @@
 
 namespace App\Transformers;
 
-use App\Models\Repairs;
+use App\Models\Pawns;
 use League\Fractal\TransformerAbstract;
 
-class RepairTransformer extends TransformerAbstract
+class PawnTransformer extends TransformerAbstract
 {
     /**
      * List of resources to automatically include
@@ -30,13 +30,14 @@ class RepairTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(Repairs $value)
+    public function transform(Pawns $value)
     {
         return [
             "id" => $value->id,
             "customer_id" => $value->customer_id,
-            "repair_content" => $value->repair_content,
+            "content" => $value->content,
             "status" => $value->status,
+            "money_pawn" => $value->money_pawn,
             "start_guarantee" => $value->start_guarantee,
             "end_guarantee" => $value->end_guarantee,
             'name' => $value->customer_name,

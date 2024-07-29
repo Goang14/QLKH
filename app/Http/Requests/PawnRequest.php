@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RepairRequest extends FormRequest
+class PawnRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,8 @@ class RepairRequest extends FormRequest
             "email" => 'required',
             "phone" => 'required',
             "address" => 'required',
-            // "type" => 'required',
-            // "repair_content" => 'required',
+            "money_pawn" => 'required',
+            "content" => 'required',
             "start_guarantee" => 'required',
             "end_guarantee" => 'required',
         ];

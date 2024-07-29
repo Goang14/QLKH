@@ -2,10 +2,27 @@
     <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
             <div class="nav">
-                <a class="nav-link {{ request()->is('repair') ? 'active-menu' : '' }}" href="{{route('repairs')}}">
-                    <div class="sb-nav-link-icon"><i class="fas fa-bar-chart-line-fill"></i></div>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-circle-info"></i></div>
                     Quản lý thông tin
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
+                <div class="collapse" id="collapseInfo" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link {{ request()->is('sell') ? 'active-menu' : '' }}" href="{{route('sells')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-brands fa-sellsy"></i></div>
+                            Bán hàng
+                        </a>
+                        <a class="nav-link {{ request()->is('repair') ? 'active-menu' : '' }}" href="{{route('repairs')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-hammer"></i></div>
+                            Sửa chữa
+                        </a>
+                        <a class="nav-link {{ request()->is('pawn') ? 'active-menu' : '' }}" href="{{route('pawns')}}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-book"></i></div>
+                            Cầm đồ
+                        </a>
+                    </nav>
+                </div>
 
                 <a class="nav-link {{ request()->is('product') ? 'active-menu' : '' }}" href="{{route('product')}}">
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -17,37 +34,23 @@
                     Quản lý nhà cung cấp
                 </a>
 
-                {{-- <a class="nav-link {{ request()->is('customer') ? 'active-menu' : '' }}" href="{{route('customer')}}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
-                    Quản lý khách hàng
-                </a> --}}
-
-                <hr class="mb-1" />
-
-                {{--<a class="nav-link {{ request()->is('user') ? 'active-menu' : '' }}" href="">
-                    <div class="sb-nav-link-icon"><i class="fas fa-person-lines-fill"></i></div>
-                    Quản lý xuất hàng
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseOrder" aria-expanded="false" aria-controls="collapseOrder">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-wallet"></i></div>
+                    Quản lý hóa đơn
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                 </a>
-
-                <a class="nav-link {{ request()->is('project') ? 'active-menu' : '' }}" href="">
-                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                    Quản lý đơn hàng
-                </a>
-
-                <a class="nav-link {{ request()->is('suppliers') ? 'active-menu' : '' }}" href="{{route('suppliers')}}">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
-                    Quản lý nhà cung cấp
-                </a>
-
-                <a class="nav-link {{ request()->is('project') ? 'active-menu' : '' }}" href="">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
-                    Báo cáo và Thống kê
-                </a>
-
-                <a class="nav-link {{ request()->is('client') ? 'active-menu' : '' }}" href="">
-                    <div class="sb-nav-link-icon"><i class="fa-solid fa-people-roof"></i></div>
-                    Quản lý khách hàng
-                </a> --}}
+                <div class="collapse" id="collapseOrder" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link {{ request()->is('repair/info1') ? 'active-menu' : '' }}" href="">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-list"></i></div>
+                            Danh sách hóa đơn
+                        </a>
+                        <a class="nav-link {{ request()->is('repair/info2') ? 'active-menu' : '' }}" href="">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-flag"></i></div>
+                            BC hóa đơn theo ngày
+                        </a>
+                    </nav>
+                </div>
             </div>
         </div>
     </nav>

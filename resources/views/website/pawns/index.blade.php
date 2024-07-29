@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex">
-                        <div class="w-100 title-screen">Quản lý sửa chữa</div>
+                        <div class="w-100 title-screen">Quản lý cầm đồ</div>
                         <div class="flex-shrink-1">
                             <button type="button" class="btn btn-primary w-90px" data-bs-toggle="modal"
                                 data-bs-target="#create" onclick="clearModal()">
@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div id="repair-datatable">
+                    <div id="pawn-datatable">
                         <div class="row mb-3">
                             <div class="col-12 col-sm-6 col-xl-4 pe-0">
                                 <label for="project_client" class="form-label m-0">Tìm kiếm</label>
@@ -32,7 +32,7 @@
 
                                     <div class="col-7">
                                         <div class="input-group">
-                                            <input id="search-repair" type="text" class="form-control" placeholder="Tìm kiếm"
+                                            <input id="search-pawn" type="text" class="form-control" placeholder="Tìm kiếm"
                                                 value="">
                                             <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i></span>
                                         </div>
@@ -50,8 +50,10 @@
                                         <th scope="col">Tên khách hàng</th>
                                         <th scope="col">Số điện thoại</th>
                                         <th scope="col">Dịch vụ</th>
+                                        <th scope="col">Số tiền</th>
+                                        <th scope="col">Tiền lãi</th>
                                         <th scope="col">Nội dung</th>
-                                        <th scope="col">Thời gian bảo hành</th>
+                                        <th scope="col">Hạn</th>
                                         <th scope="col">Trạng thái</th>
                                         <th scope="col">Địa chỉ</th>
                                         <th scope="col">Chức năng</th>
@@ -80,7 +82,7 @@
         loadData();
     });
     let keyword = '';
-    let repairsData = {};
+    let pawnsData = {};
 
     function formatDate(dateString) {
         const date = new Date(dateString);
@@ -91,11 +93,34 @@
     }
 
     function addParameterToURL(page) {
-        let url = `{{ route('repairs.search') }}?page=${page}`;
+        let url = `{{ route('pawns.search') }}?page=${page}`;
         if (keyword !== '') {
             url +=`&keyword=${keyword}`
         }
         return url;
+    }
+
+    function formatDate1(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day} 00:00:00`;
+    }
+
+    function dateDifference(date1, date2) {
+        const d1 = new Date(date1);
+        const d2 = new Date(date2);
+        d1.setHours(0, 0, 0, 0);
+        d2.setHours(0, 0, 0, 0);
+        const diffTime = d1 - d2;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays === 0 ? 1 : diffDays;
+    }
+
+    function formatPrice(number) {
+        return number.toLocaleString('vi-VN', {currency: 'VND' });
     }
 
     function loadData(page = 1) {
@@ -106,19 +131,25 @@
             dataType: 'json',
         }).done(function(response) {
             console.log(response);
-            let dataTable = $('#repair-datatable #data-table-body').empty();
+            let date = new Date();
+            const formattedDate = formatDate1(date);
+            let dataTable = $('#pawn-datatable #data-table-body').empty();
             // render table data
             $.each(response.data, function(index, item) {
+                let day = dateDifference(formattedDate, item.start_guarantee )
+                const calculatedValue = Math.floor(((item.money_pawn.replace(/\./g, '')) * 3000 * day )/ 1000000);
                 let row = `<tr id="tr-${item.id}" style="vertical-align: middle">
                 <td class="text-center">${++index}</td>
                 <td class="text-center">${item.name}</td>
                 <td class="text-center">${item.phone}</td>
-                <td class="text-center">${"Sửa chữa"}</td>
-                <td class="text-center">${item.repair_content ?? ''}</td>
+                <td class="text-center">${"Cầm đồ"}</td>
+                <td class="text-center">${item.money_pawn + " VND"}</td>
+                <td class="text-center">${formatPrice(calculatedValue) + " VND"}</td>
+                <td class="text-center">${item.content ?? ''}</td>
                 <td class="text-center">
                     ${formatDate(item.start_guarantee)} - ${formatDate(item.end_guarantee)}
                 </td>
-                <td class="text-center">${(item.status == 0 ? '<span class="text-success">Đang còn bảo hành</span>' : '<span class="text-danger">Hết bảo hành</span>')}</td>
+                <td class="text-center">${(item.status == 0 ? '<span class="text-success">Đang còn hạn</span>' : '<span class="text-danger">Hết hạn</span>')}</td>
                 <td class="text-center">${item.address}</td>
                 <td class="text-center">
                     <button
@@ -128,7 +159,7 @@
                         onclick="fillModal('${item.id}')">
                         <i class="bi bi-pencil-square"></i>
                     </button>
-                    <form action="{{ route('repair.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
+                    <form action="{{ route('pawns.delete', ['id' => ':id']) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">
@@ -139,9 +170,9 @@
             </tr>`;
                 row = row.replace(':id', item.id);
                 dataTable.append(row);
-                repairsData[`${item.id}`] = item;
+                pawnsData[`${item.id}`] = item;
             });
-            $('#repair-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
+            $('#pawn-datatable #pagination-links').html(pagination(response.pagination, 'loadData'));
         }).fail(function(err) {
             const errors = err?.responseJSON?.errors;
             if (typeof errors === 'object' && errors !== null && !(errors instanceof Array)) {
@@ -156,7 +187,7 @@
         });
     }
 
-    $('#repair-datatable #search-repair').keyup(function(event) {
+    $('#pawn-datatable #search-pawn').keyup(function(event) {
         keyword = event?.target?.value ?? '';
         loadData();
     });
@@ -173,19 +204,20 @@
     }
 
     function fillModal(id) {
-        $('#id_customer').val(repairsData[`${id}`]['customer_id']);
-        $('#id_repair').val(id);
-        let start_guarantee = repairsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
-        let end_guarantee = repairsData[`${id}`]['end_guarantee'].replace(' 00:00:00', '');
-
         $('#update').modal('show');
+        $('#id_customer').val(pawnsData[`${id}`]['customer_id']);
+        $('#id_pawn').val(id);
+        let start_guarantee = pawnsData[`${id}`]['start_guarantee'].replace(' 00:00:00', '');
+        let end_guarantee = pawnsData[`${id}`]['end_guarantee'].replace(' 00:00:00', '');
         if (id) {
-            $('#updateNew #name_customer').val(repairsData[`${id}`]['name']);
-            $('#updateNew #phone').val(repairsData[`${id}`]['phone']);
-            $('#updateNew #email').val(repairsData[`${id}`]['email']);
-            $('#updateNew #address').val(repairsData[`${id}`]['address']);
-            $('#updateNew #type').val(repairsData[`${id}`]['type']);
-            $('#updateNew #content').val(repairsData[`${id}`]['repair_content']);
+            $('#updateNew #name_customer').val(pawnsData[`${id}`]['name']);
+            $('#updateNew #phone').val(pawnsData[`${id}`]['phone']);
+            $('#updateNew #email').val(pawnsData[`${id}`]['email']);
+            $('#updateNew #address').val(pawnsData[`${id}`]['address']);
+            $('#updateNew #type').val(pawnsData[`${id}`]['type']);
+            $('#updateNew #product_id').val(pawnsData[`${id}`]['product_id']);
+            $('#updateNew #content').val(pawnsData[`${id}`]['content']);
+            $('#updateNew #money_pawn').val(pawnsData[`${id}`]['money_pawn']);
             $('#updateNew #start_guarantee').val(start_guarantee);
             $('#updateNew #end_guarantee').val(end_guarantee);
         }

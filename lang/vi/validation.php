@@ -182,7 +182,7 @@ return [
         'email' => 'E-mail',
         'address' => 'Địa chỉ',
         'type' => "Loại",
-        'repair_content' => 'Nội dung sửa chữa',
+        'content' => 'Nội dung',
         'name_customer' => "Tên khách hàng"
     ],
 ];

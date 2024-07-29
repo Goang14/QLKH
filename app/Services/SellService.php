@@ -3,20 +3,19 @@
 namespace App\Services;
 
 use App\Models\Customers;
-use App\Models\Products;
-use App\Models\Repairs;
+use App\Models\Sells;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Class RepairService
+ * Class SellService
  * @package App\Services
  */
-class RepairService extends BaseService
+class SellService extends BaseService
 {
-    public function createRepair($request){
+    public function createSell($request){
         try {
             DB::beginTransaction();
             $customer = Customers::create([
@@ -24,18 +23,19 @@ class RepairService extends BaseService
                 "email" => $request->email,
                 "phone" => $request->phone,
                 "address" => $request->address,
-                "type" => 1,
+                "type" => 2,
             ]);
 
-            $repair = Repairs::create([
+            $sell = Sells::create([
                 "customer_id" => $customer->id,
-                "repair_content" => $request->content,
+                "product_id" => $request->product_id,
+                "content" => $request->content,
                 "status" => 0,
                 "start_guarantee" => $request->start_guarantee,
                 "end_guarantee" => $request->end_guarantee,
             ]);
             DB::commit();
-            return $repair;
+            return $sell;
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
@@ -43,11 +43,11 @@ class RepairService extends BaseService
         }
     }
 
-    public function searchRepair($request)
+    public function searchSell($request)
     {
         try {
             $params = $request->only('keyword', 'service_search');
-            $data = Repairs::all();
+            $data = Sells::all();
 
             foreach ($data as $value) {
                 if($value->end_guarantee < Carbon::now()){
@@ -56,8 +56,11 @@ class RepairService extends BaseService
                 }
             }
 
-            $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
-                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type');
+            $query = Sells::leftJoin('customers', 'customers.id', '=', 'sells.customer_id')
+                            ->join('products', 'products.id', '=', 'sells.product_id')
+                            ->select('sells.*', 'customers.name as customer_name', 'customers.phone', 'customers.address',
+                             'customers.email', 'customers.type', 'products.name as product_name', 'products.price',
+                            'products.id as product_id');
 
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];
@@ -73,12 +76,12 @@ class RepairService extends BaseService
         }
     }
 
-
-    public function updateRepair($request){
+    public function updateSell($request){
         try {
             DB::beginTransaction();
-            Repairs::find($request->id_repair)->update([
-                'repair_content' => $request->content,
+            Sells::find($request->id_sell)->update([
+                'content' => $request->content,
+                'product_id' => $request->product_id,
                 'start_guarantee' => $request->start_guarantee,
                 'end_guarantee' => $request->end_guarantee,
             ]);
@@ -88,20 +91,21 @@ class RepairService extends BaseService
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'type' => $request->type,
+                'type' => 2,
             ]);
             DB::commit();
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             throw $e;
         }
     }
 
-    public function deleteRepair($id){
+    public function deleteSell($id){
         try {
-            $repair = Repairs::find($id);
-            Customers::find($repair->customer_id)->delete();
-            return $repair->delete();
+            $sell = Sells::find($id);
+            Customers::find($sell->customer_id)->delete();
+            return $sell->delete();
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

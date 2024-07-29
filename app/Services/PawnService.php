@@ -3,20 +3,20 @@
 namespace App\Services;
 
 use App\Models\Customers;
-use App\Models\Products;
-use App\Models\Repairs;
+use App\Models\Pawns;
+use App\Models\Sells;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Class RepairService
+ * Class PawnService
  * @package App\Services
  */
-class RepairService extends BaseService
+class PawnService extends BaseService
 {
-    public function createRepair($request){
+    public function createPawn($request){
         try {
             DB::beginTransaction();
             $customer = Customers::create([
@@ -24,18 +24,19 @@ class RepairService extends BaseService
                 "email" => $request->email,
                 "phone" => $request->phone,
                 "address" => $request->address,
-                "type" => 1,
+                "type" => 3,
             ]);
 
-            $repair = Repairs::create([
+            $pawn = Pawns::create([
                 "customer_id" => $customer->id,
-                "repair_content" => $request->content,
+                "content" => $request->content,
+                "money_pawn" => $request->money_pawn,
                 "status" => 0,
                 "start_guarantee" => $request->start_guarantee,
                 "end_guarantee" => $request->end_guarantee,
             ]);
             DB::commit();
-            return $repair;
+            return $pawn;
         } catch (Exception $e) {
             DB::rollBack();
             Log::error($e);
@@ -43,11 +44,11 @@ class RepairService extends BaseService
         }
     }
 
-    public function searchRepair($request)
+    public function searchPawn($request)
     {
         try {
-            $params = $request->only('keyword', 'service_search');
-            $data = Repairs::all();
+            $params = $request->only('keyword');
+            $data = Pawns::all();
 
             foreach ($data as $value) {
                 if($value->end_guarantee < Carbon::now()){
@@ -56,8 +57,9 @@ class RepairService extends BaseService
                 }
             }
 
-            $query = Repairs::leftJoin('customers', 'customers.id', '=', 'repairs.customer_id')
-                            ->select('repairs.*', 'customers.name as customer_name', 'customers.phone', 'customers.address', 'customers.email', 'customers.type');
+            $query = Pawns::leftJoin('customers', 'customers.id', '=', 'pawns.customer_id')
+                            ->select('pawns.*', 'customers.name as customer_name', 'customers.phone', 'customers.address',
+                             'customers.email', 'customers.type');
 
             if (isset($params['keyword'])) {
                 $keyword = $params['keyword'];
@@ -73,12 +75,12 @@ class RepairService extends BaseService
         }
     }
 
-
-    public function updateRepair($request){
+    public function updatePawn($request){
         try {
             DB::beginTransaction();
-            Repairs::find($request->id_repair)->update([
-                'repair_content' => $request->content,
+            Pawns::find($request->id_pawn)->update([
+                'content' => $request->content,
+                'money_pawn' => $request->money_pawn,
                 'start_guarantee' => $request->start_guarantee,
                 'end_guarantee' => $request->end_guarantee,
             ]);
@@ -88,20 +90,21 @@ class RepairService extends BaseService
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'type' => $request->type,
+                'type' => 3,
             ]);
             DB::commit();
         } catch (Exception $e) {
+            DB::rollBack();
             Log::error($e);
             throw $e;
         }
     }
 
-    public function deleteRepair($id){
+    public function deletePawn($id){
         try {
-            $repair = Repairs::find($id);
-            Customers::find($repair->customer_id)->delete();
-            return $repair->delete();
+            $sell = Pawns::find($id);
+            Customers::find($sell->customer_id)->delete();
+            return $sell->delete();
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

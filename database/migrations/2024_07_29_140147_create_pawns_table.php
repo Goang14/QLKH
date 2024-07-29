@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('repairs', function (Blueprint $table) {
+        Schema::create('pawns', function (Blueprint $table) {
             $table->id();
             $table->integer('customer_id');
-            $table->string('repair_content')->nullable();
+            $table->string('money_pawn');
+            $table->string('content')->nullable();
             $table->integer('status')->nullable();
             $table->dateTime('start_guarantee')->nullable();
             $table->dateTime('end_guarantee')->nullable();
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('repairs');
+        Schema::dropIfExists('pawns');
     }
 };
