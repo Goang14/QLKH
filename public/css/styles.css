@@ -11812,16 +11812,16 @@ section
   flex-wrap: wrap;
   overflow: hidden;
 }
-section::before
+/* section::before
 {
   content: '';
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(#000,#0f0,#000);
+  background: linear-gradient(#000,#007aff,#000);
   animation: animate 5s linear infinite;
-}
-@keyframes animate
+} */
+/* @keyframes animate
 {
   0%
   {
@@ -11831,7 +11831,7 @@ section::before
   {
     transform: translateY(100%);
   }
-}
+} */
 section span
 {
   position: relative;
@@ -11844,7 +11844,7 @@ section span
 }
 section span:hover
 {
-  background: #0f0;
+  background: #007aff;
   transition: 0s;
 }
 
@@ -11874,7 +11874,7 @@ section .signin .content
 section .signin .content h2
 {
   font-size: 2em;
-  color: #0f0;
+  color: #007aff;
   text-transform: uppercase;
 }
 section .signin .content .form
@@ -11933,13 +11933,13 @@ section .signin .content .form .inputBox i
 }
 .signin .content .form .links a:nth-child(2)
 {
-  color: #0f0;
+  color: #007aff;
   font-weight: 600;
 }
 .signin .content .form .inputBox input[type="submit"]
 {
   padding: 10px;
-  background: #0f0;
+  background: #007aff;
   color: #000;
   font-weight: 600;
   font-size: 1.35em;
@@ -11966,3 +11966,4 @@ input[type="submit"]:active
     height: calc(20vw - 2px);
   }
 }
+
